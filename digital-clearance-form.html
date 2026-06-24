@@ -1,0 +1,3029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>KYS Activity Clearance Approval Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.2.0/dist/signature_pad.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+    :root {
+      --brand: #1d4ed8;
+      --brand-dark: #1e3a8a;
+      --bg: #eef2ff;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #cbd5e1;
+      --radius: 14px;
+      --success: #10b981;
+      --success-dark: #047857;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+    }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+@media screen {
+      body {
+        font-family: 'Inter', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        padding: 30px 20px;
+      }
+
+.container {
+        max-width: 1100px;
+        margin: 0 auto;
+        background: var(--card);
+        padding: 28px;
+        border-radius: var(--radius);
+        box-shadow: 0 12px 28px rgba(0,0,0,.08);
+        border: 1px solid var(--border);
+      }
+
+.header {
+        text-align: center;
+        margin-bottom: 22px;
+        border-bottom: 2px solid var(--border);
+        padding-bottom: 18px;
+      }
+
+.header h1 {
+        font-size: 1.55rem;
+        font-weight: 800;
+        color: var(--brand);
+      }
+
+.header p {
+        color: var(--muted);
+        font-size: .95rem;
+        margin-top: 6px;
+      }
+
+.top-banner {
+        display: none;
+        margin-bottom: 18px;
+        padding: 14px 16px;
+        border-radius: 10px;
+        background: #ecfeff;
+        border: 1px solid #a5f3fc;
+        color: #155e75;
+        font-size: .92rem;
+        line-height: 1.45;
+      }
+
+.section-title {
+        font-weight: 800;
+        font-size: 1.05rem;
+        color: var(--brand);
+        margin: 25px 0 14px;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 6px;
+      }
+
+.grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+.full-width { grid-column: 1 / -1; }
+
+.field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+.field label {
+        font-size: .85rem;
+        font-weight: 700;
+        color: var(--text);
+      }
+
+.field input, .field select, .field textarea {
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        font-family: inherit;
+        font-size: .92rem;
+        background: #f8fafc;
+      }
+
+.field textarea {
+        min-height: 90px;
+        resize: vertical;
+      }
+
+.create-box {
+        background: linear-gradient(180deg, #eff6ff, #f8fbff);
+        border: 1px solid #bfdbfe;
+        border-radius: 12px;
+        padding: 18px;
+        margin-bottom: 20px;
+      }
+
+.create-box h3 {
+        color: var(--brand);
+        font-size: 1rem;
+        margin-bottom: 6px;
+      }
+
+.create-box p {
+        color: #475569;
+        font-size: .88rem;
+        line-height: 1.45;
+        margin-bottom: 12px;
+      }
+
+.mini-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+
+.btn-main,
+      .btn-secondary,
+      .btn-success,
+      .btn-wa,
+      .btn-outline {
+        border: none;
+        border-radius: 9px;
+        padding: 11px 14px;
+        font-weight: 800;
+        cursor: pointer;
+        font-family: inherit;
+      }
+
+.btn-main { background: var(--brand); color: #fff; }
+      .btn-secondary { background: #e2e8f0; color: var(--text); }
+      .btn-success { background: var(--success); color: #fff; }
+      .btn-wa { background: #25D366; color: #fff; }
+      .btn-outline { background: #fff; color: var(--brand); border: 1px solid #bfdbfe; }
+
+.generated-link-box,
+      .wa-message-box {
+        display: none;
+        margin-top: 12px;
+      }
+
+.generated-link-box input,
+.wa-message-box textarea { 
+    width: 100%; 
+    resize: vertical;      /* ← TAMBAH INI */
+    min-height: 160px;     /* ← TAMBAH INI jugak untuk saiz minimum */
+}
+
+.helper-note {
+        font-size: .82rem;
+        color: var(--muted);
+        margin-bottom: 8px;
+        line-height: 1.45;
+      }
+
+.checklist-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        background: #f8fafc;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+      }
+
+.chk-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px dashed var(--border);
+        padding-bottom: 8px;
+        gap: 10px;
+      }
+
+.chk-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+.chk-label {
+        font-size: .85rem;
+        font-weight: 600;
+        width: 40%;
+        padding-right: 10px;
+      }
+
+.chk-options {
+        display: flex;
+        gap: 10px;
+        width: 28%;
+        justify-content: flex-start;
+        font-size: .8rem;
+      }
+
+.teacher-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+
+.btn-remove-teacher {
+    display: block;
+    width: 100%;
+    background: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fca5a5;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: .75rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    text-align: center;
+    position: static;   /* ← tukar dari absolute ke static */
+}
+
+.btn-add-teacher {
+        background: #e0e7ff;
+        color: var(--brand);
+        border: 1px dashed var(--brand);
+        padding: 10px;
+        border-radius: 8px;
+        width: 100%;
+        cursor: pointer;
+        font-weight: 800;
+        margin-top: 10px;
+      }
+
+.tracker-box {
+        background: #f8fafc;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 15px 20px;
+        margin: 28px 0 20px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+      }
+
+.tracker-status {
+        font-weight: 800;
+        font-size: 1.4rem;
+        color: var(--brand);
+      }
+
+.tracker-status.complete { color: var(--success); }
+
+.sig-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+        gap: 15px;
+      }
+
+.sig-card {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 15px;
+        background: #fff;
+        position: relative;
+      }
+
+.sig-card.signed {
+        border-color: var(--success);
+        background: #f0fdf4;
+      }
+
+.sig-card.remote-locked {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+        opacity: 0.8;
+      }
+
+.sig-card-header {
+        font-weight: 800;
+        font-size: .9rem;
+        margin-bottom: 10px;
+        color: var(--brand);
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+.sig-badge {
+        font-size: .72rem;
+        padding: 3px 7px;
+        border-radius: 4px;
+        background: #e2e8f0;
+        color: #475569;
+        white-space: nowrap;
+      }
+
+.signed .sig-badge { background: var(--success); color: white; }
+
+.sig-wrapper {
+        border: 1px dashed var(--border);
+        border-radius: 8px;
+        background: #fff;
+        margin-bottom: 10px;
+        position: relative;
+        height: 120px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+        touch-action: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+/* Gantikan yang sedia ada */
+.locked-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(255,255,255,0.45);  /* ← kurangkan dari 0.72 ke 0.45 */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+    color: var(--success);
+    z-index: 5;
+    backdrop-filter: none;
+}
+
+.signed .locked-overlay { 
+    display: flex; 
+    flex-direction: column; 
+}
+
+.remote-locked .locked-overlay { display: flex; color: var(--muted); content: "Awaiting Remote Approval";}
+      .signed .locked-overlay { display: flex; flex-direction: column; }
+      .sig-img-preview { max-height: 80px; max-width: 90%; z-index: 10; position: relative;}
+
+.sig-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 20;
+      }
+
+/* Mobile specific fix */
+@media (max-width: 768px) {
+    .locked-overlay {
+        background: rgba(255,255,255,0.40) !important;
+    }
+    .sig-card.signed .locked-overlay {
+        background: rgba(240, 253, 244, 0.50) !important;
+    }
+}
+
+.btn-action {
+        flex: 1;
+        padding: 8px;
+        font-size: .8rem;
+        font-weight: 800;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+.btn-clear { background: #e2e8f0; color: var(--text); }
+      .btn-submit { background: var(--brand); color: #fff; flex: 2; }
+      .btn-getpin {
+        background: #eef2ff;
+        border: 1px solid #c7d2fe;
+        color: var(--brand);
+        font-size: .75rem;
+        border-radius: 6px;
+        cursor: pointer;
+        padding: 0 10px;
+        font-weight: 800;
+      }
+
+.signed .btn-action { display: none; }
+      .btn-undo { display: none; width: 100%; background: #e2e8f0; color: var(--text); }
+      .signed .btn-undo { display: block; }
+
+.bottom-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 22px;
+      }
+
+.btn-print-container { margin-top: 18px; display: none; }
+
+.btn-print {
+        width: 100%;
+        padding: 18px;
+        background: var(--success);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 800;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+      }
+
+.offscreen-render {
+        display: block !important;
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+        width: 800px !important;
+        background: white !important;
+      }
+
+#print-layout { display: none; }
+
+/* Loading & Offline Indicators */
+      #global-loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; font-size: 1.5rem; font-weight: bold; color: var(--brand); display: none; }
+
+.offline-indicator {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--success);
+        color: white;
+        padding: 10px 18px;
+        border-radius: 30px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        z-index: 9000;
+        pointer-events: none;
+      }
+      .offline-indicator.show { opacity: 1; }
+
+button:disabled, .btn-main:disabled, .btn-secondary:disabled, .btn-success:disabled,
+      .btn-wa:disabled, .btn-outline:disabled, .btn-action:disabled, .btn-getpin:disabled, .btn-print:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+        filter: grayscale(0.15);
+        box-shadow: none !important;
+      }
+
+.is-loading { position: relative; pointer-events: none; }
+      .is-loading::after {
+        content: "";
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        margin-left: 8px;
+        border: 2px solid rgba(255,255,255,0.65);
+        border-top-color: #ffffff;
+        border-radius: 50%;
+        animation: btnSpin .7s linear infinite;
+        vertical-align: -2px;
+      }
+
+.btn-outline.is-loading::after, .btn-secondary.is-loading::after, .btn-getpin.is-loading::after, .btn-clear.is-loading::after {
+        border: 2px solid rgba(29,78,216,0.25);
+        border-top-color: var(--brand);
+      }
+
+@keyframes btnSpin { to { transform: rotate(360deg); } }
+    }
+
+/* MOBILE FIX */
+    @media (max-width: 768px) {
+      .container { padding: 18px 14px; }
+      .grid { grid-template-columns: 1fr !important; gap: 12px; }
+      .teacher-list { grid-template-columns: 1fr !important; }
+      .sig-grid { grid-template-columns: 1fr !important; }
+      .chk-row { flex-direction: column; align-items: flex-start; }
+      .chk-label, .chk-options { width: 100%; }
+      .chk-row input[type="text"] { width: 100% !important; }
+      .tracker-box { flex-direction: column; align-items: flex-start; }
+      .mini-actions, .bottom-actions, .sig-actions { flex-direction: column; }
+      .mini-actions button, .bottom-actions button, .sig-actions button { width: 100%; }
+
+/* --- TAMBAHAN BARU UNTUK FIX TABLE TERKELUAR SKRIN --- */
+      .field { min-width: 0; } 
+      .meal-table { min-width: 700px; } 
+    }
+
+@media print {
+      @page { size: A4; margin: 0; }
+      body { margin: 0; background: #fff; }
+      #screen-ui, #global-loader, .offline-indicator { display: none !important; }
+      #print-layout { display: block !important; }
+    }
+
+.print-page {
+      width: 210mm; min-height: 297mm; padding: 10mm 15mm; font-family: Arial, sans-serif;
+      font-size: 10px; color: #000; box-sizing: border-box; background: #fff; position: relative;
+      overflow: hidden; page-break-after: always;
+    }
+    .print-page:last-child { page-break-after: auto; }
+    .doc-title-box { text-align: center; margin-bottom: 12px; font-weight: bold; }
+    .doc-title-box h2 { font-size: 15px; margin: 0; }
+    .doc-title-box .bordered-title { border: 2px solid #000; padding: 4px; font-size: 12.5px; margin: 6px 0; text-transform: uppercase; }
+    .doc-title-box p { font-size: 9px; text-align: left; margin: 6px 0; }
+    .form-table { width: 100%; border-collapse: collapse; font-size: 10.5px; margin-bottom: 8px; }
+    .form-table td { padding: 3px 0; vertical-align: top; }
+    .td-num { width: 18px; font-weight: bold; }
+    .td-label { width: 210px; }
+    .td-colon { width: 12px; }
+    .line-input { border-bottom: 1px dotted #000; display: inline-block; font-weight: bold; text-align: center; line-height: 14px; min-height: 16px; position: relative; top: 2px; }
+    .full-line { border-bottom: 1px dotted #000; width: 100%; font-weight: bold; line-height: 14px; min-height: 16px; position: relative; top: 2px; }
+    .print-box-square { width: 15px; height: 15px; border: 1px solid #000; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; font-size: 11px; background: #fff; vertical-align: middle; }
+    .chk-table { width: 100%; border-collapse: collapse; font-size: 9px; margin-top: 2px; margin-bottom: 5px; }
+    .chk-table td { padding: 1.5px 0; vertical-align: middle; }
+    .teacher-slot-table { width: 100%; border-collapse: collapse; margin-top: 2px; font-size: 9px; }
+    .teacher-slot-table td { padding: 5px 0; vertical-align: bottom; }
+    .section-header-print { font-weight: bold; text-decoration: underline; margin-top: 15px; margin-bottom: 10px; font-size: 10px; }
+    .house-block { margin-bottom: 25px; }
+    .house-title { font-weight: bold; text-decoration: underline; font-size: 10px; margin-bottom: 5px; text-transform: uppercase; }
+
+/* 1. Generate WhatsApp Message (Asalnya .btn-outline) - Tukar ke Kuning */
+    .mini-actions .btn-outline {
+        background-color: #FFD700 !important; 
+        color: #000 !important;
+        border: 1px solid #e6c200 !important;
+        transition: all 0.3s ease;
+    }
+
+/* 2. Start Fresh (Asalnya .btn-secondary) - Tukar ke Merah */
+    .mini-actions .btn-secondary {
+        background-color: #ef4444 !important;
+        color: #fff !important;
+        border: none !important;
+        transition: all 0.3s ease;
+    }
+
+/* 3. Copy Message (Asalnya .btn-success) - Tukar ke Purple */
+    .wa-message-box .btn-success {
+        background-color: #8E44AD !important; 
+        color: #fff !important;
+        border: none !important;
+        transition: all 0.3s ease;
+    }
+
+/* --- Hover Effects --- */
+    .mini-actions .btn-outline:hover {
+        background-color: #e6c200 !important;
+        transform: translateY(-2px);
+    }
+    .mini-actions .btn-secondary:hover {
+        background-color: #b91c1c !important; 
+        transform: translateY(-2px);
+    }
+    .wa-message-box .btn-success:hover {
+        background-color: #732D91 !important;
+        transform: translateY(-2px);
+    }
+
+.btn-main:hover {
+        background-color: var(--brand-dark) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(29, 78, 216, 0.2);
+        transition: all 0.3s ease;
+    }
+    .btn-wa:hover {
+        background-color: #1eb956 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+        transition: all 0.3s ease;
+    }
+    .btn-add-teacher:hover {
+        background-color: #c7d2fe !important; 
+        border-style: solid !important;
+        transform: translateY(-2px);
+        transition: all 0.3s ease;
+    }
+    .btn-main, .btn-wa, .btn-add-teacher {
+        transition: all 0.3s ease !important;
+    }	
+
+/* --- EXTRA DATE STYLES --- */
+    .btn-add-date {
+      background: #eef2ff;
+      color: var(--brand);
+      border: 1px dashed var(--brand);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+      width: 100%;
+      transition: all 0.2s ease;
+    }
+    .btn-add-date:hover { background: #e0e7ff; }
+
+/* --- TABLE MEAL STYLES --- */
+    .meal-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .meal-table th, .meal-table td {
+      border: 1px solid var(--border);
+      padding: 8px 5px;
+      font-size: 0.85rem;
+    }
+    .meal-table th {
+      background: #f8fafc;
+      font-weight: 600;
+    }
+    .meal-table input[type="date"], .meal-table input[type="number"] {
+      width: 100%;
+      border: none;
+      background: transparent;
+      text-align: center;
+      font-family: inherit;
+      padding: 4px;
+    }
+    .meal-table input[type="date"]:focus, .meal-table input[type="number"]:focus {
+      outline: none;
+      background: #f1f5f9;
+      border-radius: 4px;
+    }
+    .meal-table input[type="checkbox"] {
+      cursor: pointer;
+    }
+    .btn-add-date-new {
+      width: 100%;
+      padding: 10px;
+      background: #fff;
+      border: 1px solid var(--brand);
+      color: var(--brand);
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-add-date-new:hover {
+      background: #eef2ff;
+    }
+    .btn-remove-date-btn {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+    }
+    .btn-remove-date-btn:hover { background: #fca5a5; }
+
+</style>
+</head>
+<body>
+
+<div id="global-loader">⏳ Syncing with Cloud Database...</div>
+<div id="offline-indicator" class="offline-indicator">💾 Auto-saved locally</div>
+
+<div id="screen-ui" class="container">
+  <div class="header">
+    <h1>Digital Clearance / Approval Form for College Activity</h1>
+    <p>Multi-Activity Workflow • Unique Link Generator • WhatsApp Message • 4-Page PDF</p>
+  </div>
+
+<div id="activity-banner" class="top-banner"></div>
+
+<div class="create-box">
+    <h3>Create New Clearance Form Link</h3>
+    <p>Create one unique activity link for each programme. Share the same link with teachers via WhatsApp for review and digital signature.</p>
+
+<div class="grid">
+      <div class="field">
+        <label>Class / Club / Society</label>
+        <input type="text" id="new_society" placeholder="Example: English Language Society (ELASO)">
+      </div>
+      <div class="field">
+        <label>Activity Name</label>
+        <input type="text" id="new_activity" placeholder="Example: Scrabble Gala 13 2026">
+      </div>
+      <div class="field">
+        <label>Venue</label>
+        <input type="text" id="new_venue" placeholder="Example: Masemall, Nilai, Hegeri Sembilan">
+      </div>
+      <div class="field">
+        <label>Date</label>
+        <input type="date" id="new_date">
+      </div>
+    </div>
+
+<div class="mini-actions">
+      <button type="button" id="btnCreateLink" class="btn-main" onclick="createNewActivityLink()">
+      Generate Unique Link
+      </button>
+      <button type="button" class="btn-outline" onclick="generateWhatsAppMessage(getCurrentActivityLink())">Generate WhatsApp Message</button>
+      <button type="button" class="btn-secondary" onclick="clearOfflineDraftAndReload()">🗑️ Start Fresh</button>
+    </div>
+
+<div id="generated-link-box" class="generated-link-box">
+  <label style="display:block; font-weight:700; margin-bottom:6px; color:var(--brand);">
+    ✅ Generated Activity Link
+  </label>
+  <p style="font-size:.8rem; color:#475569; margin-bottom:8px; line-height:1.5;">
+    Share this link with all teachers via WhatsApp. Each teacher opens the 
+    <strong>same link</strong> on their own device to sign.
+  </p>
+  <input type="text" id="generated-link" readonly 
+    style="width:100%; background:#f0f9ff; border:2px solid #3b82f6; 
+           border-radius:8px; padding:10px 12px; font-size:.85rem; 
+           color:#1e3a8a; font-weight:600; margin-bottom:8px;">
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+    <button type="button" onclick="copyGeneratedLink()" 
+      style="background:#1d4ed8; color:white; border:none; 
+             padding:12px 10px; border-radius:8px; font-weight:800; 
+             cursor:pointer; font-family:inherit; font-size:.85rem;
+             width:100%;">
+      📋 Copy Link
+    </button>
+    <button type="button" onclick="openGeneratedLink()" 
+      style="background:#0f766e; color:white; border:none; 
+             padding:12px 10px; border-radius:8px; font-weight:800; 
+             cursor:pointer; font-family:inherit; font-size:.85rem;
+             width:100%;">
+      🔗 Open Link
+    </button>
+  </div>
+  <p style="font-size:.75rem; color:#94a3b8; margin-top:8px; line-height:1.5;">
+    ⚠️ Always use the <strong>Copy Link</strong> button above to share — 
+    do not retype manually.
+  </p>
+</div>
+
+<div id="wa-message-box" class="wa-message-box">
+      <label style="display:block; font-weight:700; margin-bottom:6px; color:var(--brand);">Auto-Generated WhatsApp Message</label>
+      <textarea id="waMessage" readonly></textarea>
+      <div class="mini-actions">
+        <button type="button" class="btn-success" onclick="copyWhatsAppMessage()">Copy Message</button>
+        <button type="button" class="btn-wa" onclick="openWhatsAppShare()">Open WhatsApp</button>
+      </div>
+    </div>
+  </div>
+
+<form id="activityForm">
+    <div class="section-title">A. Activity Details</div>
+
+<div class="grid">
+      <div class="field">
+        <label>1. Date of Form Submission</label>
+        <input type="date" id="i_submitDate" required>
+      </div>
+      <div class="field">
+        <label>Time of Submission</label>
+        <input type="time" id="i_submitTime">
+      </div>
+    </div>
+
+<div class="field full-width" style="margin-bottom:15px;">
+      <label>2. Name of Class / Society / Club / Team</label>
+      <input type="text" id="i_societyName" required>
+    </div>
+
+<div class="grid">
+      <div class="field full-width">
+        <label>3. Activity</label>
+        <input type="text" id="i_activity" required>
+      </div>
+      <div class="field full-width">
+        <label>4. Venue</label>
+        <input type="text" id="i_venue" required>
+      </div>
+    </div>
+
+<div class="grid">
+      <div class="field">
+        <label>5. From (Date & Time)</label>
+        <div style="display:flex; gap:10px;">
+          <input type="date" id="i_fromDate" style="flex:1" required>
+          <input type="time" id="i_fromTime" style="flex:1">
+        </div>
+      </div>
+      <div class="field">
+        <label>To (Date & Time)</label>
+        <div style="display:flex; gap:10px;">
+          <input type="date" id="i_toDate" style="flex:1" required>
+          <input type="time" id="i_toTime" style="flex:1">
+        </div>
+      </div>
+    </div>
+
+<div class="grid">
+      <div class="field">
+        <label>6. No. of Boys</label>
+        <input type="number" id="i_boys" min="0" value="0">
+      </div>
+      <div class="field">
+        <label>No. of Girls</label>
+        <input type="number" id="i_girls" min="0" value="0">
+      </div>
+    </div>
+
+<div class="field full-width" style="margin-bottom:15px;">
+      <label>7. Accommodation venue if staying overnight</label>
+      <input type="text" id="i_accommodation" placeholder="Leave blank if N/A">
+    </div>
+
+<div class="section-title">B. Accompanying Teachers / Staff (No. 8)</div>
+    <div class="helper-note">
+      Click <strong>Add Teacher</strong> for every accompanying staff member. Each teacher must request PIN, sign, then click <strong>Verify & Lock</strong>.
+    </div>
+    <div class="teacher-list" id="accompanying-teachers-container"></div>
+    <button type="button" class="btn-add-teacher" onclick="addAccTeacher()">+ Add Accompanying Teacher</button>
+
+<div class="section-title">C. Required Documents Checklist</div>
+    <div class="checklist-grid" id="checklist-container">
+      <div class="chk-row" style="font-weight:bold; border-bottom:2px solid var(--border);">
+        <div class="chk-label">Document</div>
+        <div class="chk-options" style="font-weight:bold;"><span>Attached</span><span>Pending</span><span>N/A</span></div>
+        <div style="width:30%; font-size:.85rem; padding-left:5px;">Remarks</div>
+      </div>
+    </div>
+
+<div class="section-title">D. Dining Hall Requests</div>
+    <div class="grid" style="grid-template-columns: 1fr;">
+      <div class="field full-width" style="margin-bottom: 10px;">
+        <label style="color:var(--brand); font-size:1rem; margin-bottom:8px;">20. Meal(s) request from Dining Hall</label>
+        <div style="overflow-x:auto;">
+          <table class="meal-table">
+            <thead>
+              <tr>
+                <th style="width: 18%;">Date</th>
+                <th style="width: 12%;">Day</th>
+                <th style="width: 11%;">Breakfast</th>
+                <th style="width: 13%;">Morning<br>Tea Break</th>
+                <th style="width: 11%;">Lunch</th>
+                <th style="width: 11%;">Dinner</th>
+                <th style="width: 19%;">Number of packages<br>required</th>
+                <th style="width: 5%;"></th>
+              </tr>
+            </thead>
+            <tbody id="m20_table_body">
+              <tr>
+                <td><input type="date" id="m20_date" onchange="document.getElementById('m20_day_text').innerText = getDayName(this.value) || '-'"></td>
+                <td id="m20_day_text" style="color: var(--muted); font-size: .8rem; font-weight: bold;">-</td>
+                <td><input type="checkbox" id="m20_b"></td>
+                <td><input type="checkbox" id="m20_t"></td>
+                <td><input type="checkbox" id="m20_l"></td>
+                <td><input type="checkbox" id="m20_d"></td>
+                <td><input type="number" id="m20_qty" placeholder="Qty" min="0"></td>
+                <td style="color: var(--muted); font-size: .7rem;">Main</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button type="button" class="btn-add-date-new" onclick="addExtraDate('m20')">+ Add additional date (max. 4)</button>
+      </div>
+
+<div class="field full-width" style="margin-bottom: 10px;">
+        <label style="color:var(--danger); font-size:1rem; margin-bottom:8px;">21. Meal(s) that will not be consumed at the Dining Hall</label>
+        <div style="overflow-x:auto;">
+          <table class="meal-table">
+            <thead>
+              <tr>
+                <th style="width: 18%;">Date</th>
+                <th style="width: 12%;">Day</th>
+                <th style="width: 11%;">Breakfast</th>
+                <th style="width: 13%;">Morning<br>Tea Break</th>
+                <th style="width: 11%;">Lunch</th>
+                <th style="width: 11%;">Dinner</th>
+                <th style="width: 19%;">Number of students<br>absent</th>
+                <th style="width: 5%;"></th>
+              </tr>
+            </thead>
+            <tbody id="m21_table_body">
+              <tr>
+                <td><input type="date" id="m21_date" onchange="document.getElementById('m21_day_text').innerText = getDayName(this.value) || '-'"></td>
+                <td id="m21_day_text" style="color: var(--muted); font-size: .8rem; font-weight: bold;">-</td>
+                <td><input type="checkbox" id="m21_b"></td>
+                <td><input type="checkbox" id="m21_t"></td>
+                <td><input type="checkbox" id="m21_l"></td>
+                <td><input type="checkbox" id="m21_d"></td>
+                <td><input type="number" id="m21_qty" placeholder="Qty" min="0"></td>
+                <td style="color: var(--muted); font-size: .7rem;">Main</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button type="button" class="btn-add-date-new" onclick="addExtraDate('m21')">+ Add additional date (max. 4)</button>
+      </div>
+    </div>
+
+<div class="section-title">E. Proposal Document (For Reviewers)</div>
+    <div class="field full-width" style="background:#f0fdf4; border:1px solid #bbf7d0; padding:15px; border-radius:8px; margin-bottom: 25px;">
+      <label style="color:var(--success);">Attach Google Drive Link to Proposal</label>
+      <p style="font-size:.85rem; color:#166534; margin-bottom:12px; line-height:1.45;">
+        You MUST paste a Google Drive link here so that Housemasters and Coordinators can review the proposal on their own phones before signing.
+      </p>
+
+<div style="display:flex; gap:10px; flex-wrap: wrap; margin-bottom:10px;">
+        <input type="url" id="i_proposalLink" placeholder="Paste Google Drive Link here..." style="flex:1; min-width:200px;" required>
+        <a id="btn_openLink" href="#" target="_blank" style="padding:10px 15px; background:var(--success); color:white; text-decoration:none; border-radius:8px; font-weight:700; display:none; align-items:center;">🔗 Open Link</a>
+      </div>
+    </div>
+
+<div class="bottom-actions">
+      <button type="button" id="btnSaveDraft" class="btn-main" onclick="saveActivityDraft()">
+      Save Draft Activity (Auto-Saves while typing)
+      </button>
+    </div>
+
+<div class="tracker-box">
+      <div>
+        <div class="tracker-title" style="font-weight:800; color:var(--brand);">Strict Approvals Dashboard</div>
+        <div style="font-size:.85rem; color:var(--muted); margin-top:4px; line-height:1.4;">
+          <strong>Policy:</strong> Every designated role below MUST sign. Once exactly 10 signatures are collected, the official form can be printed.
+        </div>
+      </div>
+      <div class="tracker-status" id="progress-text">0 / 10</div>
+    </div>
+
+<div class="sig-grid" id="signatures-container"></div>
+
+<div class="btn-print-container" id="print-container">
+      <button type="button" class="btn-print" id="btnMainSubmit" onclick="submitToSheetAndPrint()">
+        🖨️ 10/10 Complete - Save Record & Print 4-Page Form
+      </button>
+    </div>
+  </form>
+</div>
+
+<div id="print-layout">
+  <div id="print-page-1" class="print-page">
+    <div class="doc-title-box">
+      <h2>KOLEJ YAYASAN SAAD MELAKA</h2>
+      <div class="bordered-title">CLEARANCE / APPROVAL FORM FOR COLLEGE ACTIVITIES</div>
+      <p>This section (no. 1 to 23) to be completed by the teacher or advisor ONLY.</p>
+    </div>
+
+<table class="form-table">
+      <tr>
+        <td class="td-num">1.</td>
+        <td class="td-label">Date of form submission</td>
+        <td class="td-colon">:</td>
+        <td>
+          <span class="line-input" id="p_submitDate" style="width:130px;"></span>
+            Day: <span class="line-input" id="p_submitDay" style="width:100px;"></span>
+            Time: <span class="line-input" id="p_submitTime" style="width:80px;"></span>
+        </td>
+      </tr>
+      <tr>
+        <td class="td-num">2.</td>
+        <td class="td-label">Name of class / society / club / team<br><span style="font-size:8.5px; font-style:italic; font-weight:normal;">subject / others</span></td>
+        <td class="td-colon" style="vertical-align: bottom;">:</td>
+        <td style="vertical-align: bottom;"><div class="full-line" id="p_societyName"></div></td>
+      </tr>
+      <tr><td class="td-num">3.</td><td class="td-label">Activity</td><td class="td-colon">:</td><td><div class="full-line" id="p_activity"></div></td></tr>
+      <tr><td class="td-num">4.</td><td class="td-label">Venue</td><td class="td-colon">:</td><td><div class="full-line" id="p_venue"></div></td></tr>
+      <tr>
+        <td class="td-num">5.</td><td class="td-label">Date of activity</td><td class="td-colon">:</td>
+        <td>
+          From <span class="line-input" id="p_fromDate" style="width:100px;"></span>
+            Day: <span class="line-input" id="p_fromDay" style="width:90px;"></span>
+            Time: <span class="line-input" id="p_fromTime" style="width:80px;"></span><br><br>
+          to        
+          <span class="line-input" id="p_toDate" style="width:100px;"></span>
+            Day: <span class="line-input" id="p_toDay" style="width:90px;"></span>
+            Time: <span class="line-input" id="p_toTime" style="width:80px;"></span>
+        </td>
+      </tr>
+      <tr>
+        <td class="td-num">6.</td><td class="td-label">Total of students involve</td><td class="td-colon">:</td>
+        <td>
+          <span class="line-input" id="p_total" style="width:80px;"></span>
+            No. of Boys: <span class="line-input" id="p_boys" style="width:60px;"></span>
+            No. of Girls: <span class="line-input" id="p_girls" style="width:60px;"></span>
+        </td>
+      </tr>
+      <tr><td class="td-num">7.</td><td class="td-label">Accommodation venue if staying overnight</td><td class="td-colon">:</td><td><div class="full-line" id="p_accommodation"></div></td></tr>
+      <tr><td class="td-num">8.</td><td class="td-label" colspan="3">Accompanying teachers / staff</td></tr>
+    </table>
+
+<div id="p_acc_container"></div>
+
+<table class="chk-table">
+      <tr>
+        <td style="text-decoration:underline; font-size: 10px; vertical-align: bottom; padding-bottom: 3px;">Checklist ( Please tick √ at the box provided ) :</td>
+        <td style="width: 55px; text-align: center; font-size: 7px; vertical-align: bottom; padding-bottom: 3px;">Attached</td>
+        <td style="width: 55px; text-align: center; font-size: 7px; vertical-align: bottom; padding-bottom: 3px;">Pending</td>
+        <td style="width: 60px; text-align: center; font-size: 7px; vertical-align: bottom; padding-bottom: 3px;">Not<br>Required</td>
+        <td></td>
+      </tr>
+      <tbody id="p_checklist_container"></tbody>
+    </table>
+
+<div style="font-size:10px; margin-top:10px; margin-bottom: 4px; color: #000; font-weight:bold;">20. Meal(s) request from Dining Hall</div>
+    <table style="width: 100%; font-size: 8.5px; border-collapse: collapse; text-align: center; color: #000;">
+      <thead>
+         <tr style="border-top: 1px solid #ccc; border-bottom: 1px solid #ccc;">
+           <th style="padding: 3px 0; width: 14%; font-weight:normal;">Date</th>
+           <th style="padding: 3px 0; width: 14%; font-weight:normal;">Day</th>
+           <th style="padding: 3px 0; width: 12%; font-weight:normal;">Breakfast</th>
+           <th style="padding: 3px 0; width: 12%; font-weight:normal;">Morning<br>Tea Break</th>
+           <th style="padding: 3px 0; width: 12%; font-weight:normal;">Lunch</th>
+           <th style="padding: 3px 0; width: 12%; font-weight:normal;">Dinner</th>
+           <th style="padding: 3px 0; width: 24%; font-weight:normal;">Number of packages<br>required</th>
+         </tr>
+      </thead>
+      <tbody id="p_m20_table_body">
+         <tr style="border-bottom: 1px solid #ccc;">
+           <td style="padding: 3px 0;"><span id="p_m20_date"></span></td>
+           <td style="padding: 3px 0;"><span id="p_m20_day"></span></td>
+           <td style="padding: 3px 0;"><div class="print-box-square" id="p_m20_b" style="margin:0 auto; border-color: #aaa; width:12px; height:12px; font-size:9px;"></div></td>
+           <td style="padding: 3px 0;"><div class="print-box-square" id="p_m20_t" style="margin:0 auto; border-color: #aaa; width:12px; height:12px; font-size:9px;"></div></td>
+           <td style="padding: 3px 0;"><div class="print-box-square" id="p_m20_l" style="margin:0 auto; border-color: #aaa; width:12px; height:12px; font-size:9px;"></div></td>
+           <td style="padding: 3px 0;"><div class="print-box-square" id="p_m20_d" style="margin:0 auto; border-color: #aaa; width:12px; height:12px; font-size:9px;"></div></td>
+           <td style="padding: 3px 0;"><div id="p_m20_qty" style="margin:0 auto; font-size:10px;"></div></td>
+         </tr>
+      </tbody>
+      <tbody id="p_m20_extra_rows"></tbody>
+    </table>
+
+<div style="font-size:10px; margin-top:10px; margin-bottom: 4px; color: #000; font-weight:bold;">21. Meal(s) that will not be consumed at the Dining Hall</div>
+    <table style="width: 100%; font-size: 8.5px; border-collapse: collapse; text-align: center; color: #000;">
+      <thead>
+         <tr style="border-top: 1px solid #ccc; border-bottom: 1px solid #ccc;">
+           <th style="padding: 3px 0; width: 14%; font-weight:normal;">Date</th>
+           <th style="padding: 3px 0; width: 14%; font-weight:normal;">Day</th>
+           <th style="padding: 3px 0; width: 12%; font-weight:normal;">Breakfast</th>
+           <th style="padding: 3px 0; width: 12%; font-weight:normal;">Morning<br>Tea Break</th>
+           <th style="padding: 3px 0; width: 12%; font-weight:normal;">Lunch</th>
+           <th style="padding: 3px 0; width: 12%; font-weight:normal;">Dinner</th>
+           <th style="padding: 3px 0; width: 24%; font-weight:normal;">Number of students<br>absent</th>
+         </tr>
+      </thead>
+      <tbody id="p_m21_table_body">
+         <tr style="border-bottom: 1px solid #ccc;">
+           <td style="padding: 3px 0;"><span id="p_m21_date"></span></td>
+           <td style="padding: 3px 0;"><span id="p_m21_day"></span></td>
+           <td style="padding: 3px 0;"><div class="print-box-square" id="p_m21_b" style="margin:0 auto; border-color: #aaa; width:12px; height:12px; font-size:9px;"></div></td>
+           <td style="padding: 3px 0;"><div class="print-box-square" id="p_m21_t" style="margin:0 auto; border-color: #aaa; width:12px; height:12px; font-size:9px;"></div></td>
+           <td style="padding: 3px 0;"><div class="print-box-square" id="p_m21_l" style="margin:0 auto; border-color: #aaa; width:12px; height:12px; font-size:9px;"></div></td>
+           <td style="padding: 3px 0;"><div class="print-box-square" id="p_m21_d" style="margin:0 auto; border-color: #aaa; width:12px; height:12px; font-size:9px;"></div></td>
+           <td style="padding: 3px 0;"><div id="p_m21_qty" style="margin:0 auto; font-size:10px;"></div></td>
+         </tr>
+      </tbody>
+      <tbody id="p_m21_extra_rows"></tbody>
+    </table>
+
+<table class="form-table" style="margin-top:5px;">
+      <tr>
+        <td class="td-num">22.</td><td class="td-label">Name of applicant (teacher/advisor)</td><td class="td-colon">:</td>
+        <td><div class="full-line" id="p_name_app"></div></td>
+      </tr>
+      <tr>
+        <td class="td-num">23.</td><td class="td-label">Signature of applicant (teacher/advisor)</td><td class="td-colon">:</td>
+        <td style="position:relative; height:35px; border-bottom:1px dotted #000;">
+          <img id="p_img_app" style="height:40px; position:absolute; bottom:2px; display:none;" />
+        </td>
+      </tr>
+    </table>
+  </div>
+
+<div id="print-page-2" class="print-page">
+    <div class="section-header-print" style="margin-top:0;">24. Clearance / Comments / Approval by HOUSEMASTER / HOUSEMISTRESS</div>
+    <div id="house-blocks-container"></div>
+
+<div class="section-header-print" style="margin-top:20px;">25. Clearance / comments / approval by COORDINATOR</div>
+    <div id="coord-blocks-container"></div>
+  </div>
+
+<div id="print-page-3" class="print-page">
+
+<div class="section-header-print" style="margin-top: 0;">26. Clearance / comments by STUDENT AFFAIRS MANAGER</div>
+    <table style="width: 100%; font-size: 10px; border-collapse: collapse; margin-bottom: 15px;">
+      <tr>
+        <td style="width: 200px; vertical-align: bottom;">26.1 : Clearance / Comments / Approval</td>
+        <td style="width: 10px; vertical-align: bottom;">:</td>
+        <td style="width: 40px; text-align:right; padding-right: 5px; vertical-align: bottom;">Yes </td>
+        <td style="width: 25px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; width: auto; vertical-align: bottom;"></td>
+      </tr>
+      <tr>
+        <td></td><td></td>
+        <td style="text-align:right; padding-top: 10px; padding-right: 5px; vertical-align: bottom;">No </td>
+        <td style="padding-top: 10px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; vertical-align: bottom;"></td>
+      </tr>
+      <tr>
+        <td colspan="4"></td>
+        <td style="text-align: right; padding-top: 40px;">
+          <div style="width: 200px; border-top: 1px dotted #000; display: inline-block; text-align: center; font-weight: bold; padding-top: 5px;">STUDENT AFFAIRS MANAGER</div>
+        </td>
+      </tr>
+    </table>
+
+<div class="section-header-print">27. Clearance / comments by CURRICULUM MANAGEMENT MANAGER</div>
+    <table style="width: 100%; font-size: 10px; border-collapse: collapse; margin-bottom: 15px;">
+      <tr>
+        <td style="width: 200px; vertical-align: bottom;">27.1 : Approved / Disapproved</td>
+        <td style="width: 10px; vertical-align: bottom;">:</td>
+        <td style="width: 40px; text-align:right; padding-right: 5px; vertical-align: bottom;">Yes </td>
+        <td style="width: 25px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; width: auto; vertical-align: bottom;"></td>
+      </tr>
+      <tr>
+        <td></td><td></td>
+        <td style="text-align:right; padding-top: 10px; padding-right: 5px; vertical-align: bottom;">No </td>
+        <td style="padding-top: 10px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; vertical-align: bottom;"></td>
+      </tr>
+      <tr>
+        <td colspan="4"></td>
+        <td style="text-align: right; padding-top: 40px;">
+          <div style="width: 230px; border-top: 1px dotted #000; display: inline-block; text-align: center; font-weight: bold; padding-top: 5px;">CURRICULUM MANAGEMENT MANAGER</div>
+        </td>
+      </tr>
+    </table>
+
+<div class="section-header-print">28. Clearance / comments / approval by GENERAL MANAGER</div>
+    <table style="width: 100%; font-size: 10px; border-collapse: collapse;">
+
+<tr>
+        <td style="width: 200px; vertical-align: bottom;">28.1 : Budget</td>
+        <td style="width: 10px; vertical-align: bottom;">:</td>
+        <td style="width: 40px; text-align:right; padding-right: 5px; vertical-align: bottom;">Yes </td>
+        <td style="width: 25px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; width: auto; vertical-align: bottom;"></td>
+      </tr>
+      <tr>
+        <td></td><td></td>
+        <td style="text-align:right; padding-top: 10px; padding-right: 5px; vertical-align: bottom;">No </td>
+        <td style="padding-top: 10px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; vertical-align: bottom;"></td>
+      </tr>
+
+<tr>
+        <td style="padding-top: 15px; vertical-align: bottom;">28.2 : Transportation</td>
+        <td style="padding-top: 15px; vertical-align: bottom;">:</td>
+        <td style="text-align:right; padding-top: 15px; padding-right: 5px; vertical-align: bottom;">Yes </td>
+        <td style="padding-top: 15px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; vertical-align: bottom;"></td>
+      </tr>
+      <tr>
+        <td></td><td></td>
+        <td style="text-align:right; padding-top: 10px; padding-right: 5px; vertical-align: bottom;">No </td>
+        <td style="padding-top: 10px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; vertical-align: bottom;"></td>
+      </tr>
+
+<tr>
+        <td style="padding-top: 15px; vertical-align: bottom;">28.3 : The usage of premises</td>
+        <td style="padding-top: 15px; vertical-align: bottom;">:</td>
+        <td style="text-align:right; padding-top: 15px; padding-right: 5px; vertical-align: bottom;">Yes </td>
+        <td style="padding-top: 15px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; vertical-align: bottom;"></td>
+      </tr>
+      <tr>
+        <td></td><td></td>
+        <td style="text-align:right; padding-top: 10px; padding-right: 5px; vertical-align: bottom;">No </td>
+        <td style="padding-top: 10px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; vertical-align: bottom;"></td>
+      </tr>
+
+<tr>
+        <td style="padding-top: 15px; vertical-align: bottom;">28.4 : The usage of Furniture /<br>         Equipment (include PA System)</td>
+        <td style="padding-top: 15px; vertical-align: bottom;">:</td>
+        <td style="text-align:right; padding-top: 15px; padding-right: 5px; vertical-align: bottom;">Yes </td>
+        <td style="padding-top: 15px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; vertical-align: bottom;"></td>
+      </tr>
+      <tr>
+        <td></td><td></td>
+        <td style="text-align:right; padding-top: 10px; padding-right: 5px; vertical-align: bottom;">No </td>
+        <td style="padding-top: 10px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; vertical-align: bottom;"></td>
+      </tr>
+
+<tr>
+        <td style="padding-top: 15px; vertical-align: bottom;">28.5 : Staff Clearance<br>         (include O/T)</td>
+        <td style="padding-top: 15px; vertical-align: bottom;">:</td>
+        <td style="text-align:right; padding-top: 15px; padding-right: 5px; vertical-align: bottom;">Yes </td>
+        <td style="padding-top: 15px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; vertical-align: bottom;"></td>
+      </tr>
+      <tr>
+        <td></td><td></td>
+        <td style="text-align:right; padding-top: 10px; padding-right: 5px; vertical-align: bottom;">No </td>
+        <td style="padding-top: 10px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; vertical-align: bottom;"></td>
+      </tr>
+
+<tr>
+        <td style="padding-top: 15px; vertical-align: bottom;">28.6 : Food</td>
+        <td style="padding-top: 15px; vertical-align: bottom;">:</td>
+        <td style="text-align:right; padding-top: 15px; padding-right: 5px; vertical-align: bottom;">Yes </td>
+        <td style="padding-top: 15px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; vertical-align: bottom;"></td>
+      </tr>
+      <tr>
+        <td></td><td></td>
+        <td style="text-align:right; padding-top: 10px; padding-right: 5px; vertical-align: bottom;">No </td>
+        <td style="padding-top: 10px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; vertical-align: bottom;"></td>
+      </tr>
+
+<tr>
+        <td style="padding-top: 15px; vertical-align: bottom;">28.7 : Others</td>
+        <td style="padding-top: 15px; vertical-align: bottom;">:</td>
+        <td style="text-align:right; padding-top: 15px; padding-right: 5px; vertical-align: bottom;">Yes </td>
+        <td style="padding-top: 15px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; vertical-align: bottom;"></td>
+      </tr>
+      <tr>
+        <td></td><td></td>
+        <td style="text-align:right; padding-top: 10px; padding-right: 5px; vertical-align: bottom;">No </td>
+        <td style="padding-top: 10px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; vertical-align: bottom;"></td>
+      </tr>
+
+<tr>
+        <td style="padding-top: 15px; vertical-align: bottom;">28.8 : Clearance / Comments / Approval</td>
+        <td style="padding-top: 15px; vertical-align: bottom;">:</td>
+        <td style="text-align:right; padding-top: 15px; padding-right: 5px; vertical-align: bottom;">Yes </td>
+        <td style="padding-top: 15px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; vertical-align: bottom;"></td>
+      </tr>
+      <tr>
+        <td></td><td></td>
+        <td style="text-align:right; padding-top: 10px; padding-right: 5px; vertical-align: bottom;">No </td>
+        <td style="padding-top: 10px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; vertical-align: bottom;"></td>
+      </tr>
+
+</table>
+
+<div style="width: 100%; display: flex; justify-content: flex-end; margin-top: 40px; margin-bottom: 10px;">
+      <div style="width: 200px; text-align: center; border-top: 1px dotted #000; font-size: 10px; font-weight: bold; padding-top: 5px;">GENERAL MANAGER</div>
+    </div>
+  </div>
+
+<div id="print-page-4" class="print-page">
+    <div class="section-header-print" style="margin-top: 0;">29. Clearance / comments by DEPUTY PRINCIPAL</div>
+
+<table style="width: 100%; font-size: 10px; border-collapse: collapse; margin-bottom: 40px;">
+      <tr>
+        <td style="width: 200px; vertical-align: bottom;">29.1 : Approved / Disapproved</td>
+        <td style="width: 10px; vertical-align: bottom;">:</td>
+        <td style="width: 40px; text-align:right; padding-right: 5px; vertical-align: bottom;">Yes </td>
+        <td style="width: 25px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; width: auto; vertical-align: bottom;"></td>
+      </tr>
+      <tr>
+        <td></td><td></td>
+        <td style="text-align:right; padding-top: 10px; padding-right: 5px; vertical-align: bottom;">No </td>
+        <td style="padding-top: 10px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; vertical-align: bottom;"></td>
+      </tr>
+      <tr>
+        <td colspan="4"></td>
+        <td style="text-align: right; padding-top: 40px;">
+          <div style="width: 200px; border-top: 1px dotted #000; display: inline-block; text-align: center; font-weight: bold; padding-top: 5px;">DEPUTY PRINCIPAL</div>
+        </td>
+      </tr>
+    </table>
+
+    <div class="section-header-print">30. Clearance / comments by PRINCIPAL</div>
+
+<table style="width: 100%; font-size: 10px; border-collapse: collapse; margin-bottom: 40px;">
+      <tr>
+        <td style="width: 200px; vertical-align: bottom;">30.1 : Approved / Disapproved</td>
+        <td style="width: 10px; vertical-align: bottom;">:</td>
+        <td style="width: 40px; text-align:right; padding-right: 5px; vertical-align: bottom;">Yes </td>
+        <td style="width: 25px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; width: auto; vertical-align: bottom;"></td>
+      </tr>
+      <tr>
+        <td></td><td></td>
+        <td style="text-align:right; padding-top: 10px; padding-right: 5px; vertical-align: bottom;">No </td>
+        <td style="padding-top: 10px; vertical-align: bottom;"><div class="print-box-square"></div></td>
+        <td style="border-bottom: 1px dotted #000; vertical-align: bottom;"></td>
+      </tr>
+      <tr>
+        <td colspan="4"></td>
+        <td style="text-align: right; padding-top: 40px;">
+          <div style="width: 200px; border-top: 1px dotted #000; display: inline-block; text-align: center; font-weight: bold; padding-top: 5px;">PRINCIPAL</div>
+        </td>
+      </tr>
+    </table>
+
+<div style="border-top: 2px solid #000; margin-bottom: 15px;"></div>
+
+<div style="font-weight: bold; font-size: 11px; margin-bottom: 15px;">FOR ADMINISTRATION DEPT. USE ONLY</div>
+    <div style="font-size: 10px; margin-bottom: 10px;">Make copies for</div>
+
+<table style="width: 100%; font-size: 10px; border-collapse: collapse;">
+      <tr>
+        <td style="width: 250px; padding: 6px 0;">    1) Housemaster / Housemistress's Office</td>
+        <td style="width: 30px;"><div class="print-box-square"></div></td>
+        <td>received by : ...................................</td>
+        <td>Date : .......................</td>
+      </tr>
+      <tr>
+        <td style="padding: 6px 0;">    2) Senior Food & Accommodation Manager</td>
+        <td><div class="print-box-square"></div></td>
+        <td>received by : ...................................</td>
+        <td>Date : .......................</td>
+      </tr>
+      <tr>
+        <td style="padding: 6px 0;">    3) Others :</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td style="padding: 6px 0;">    4) Please specify</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td style="padding: 6px 0;">        4.1) Senior A/C Assistant</td>
+        <td><div class="print-box-square"></div></td>
+        <td>received by : ...................................</td>
+        <td>Date : .......................</td>
+      </tr>
+      <tr>
+        <td style="padding: 6px 0;">        4.2) Amelia</td>
+        <td><div class="print-box-square"></div></td>
+        <td>received by : ...................................</td>
+        <td>Date : .......................</td>
+      </tr>
+      <tr>
+        <td style="padding: 6px 0;">        4.3) Others</td>
+        <td><div class="print-box-square"></div></td>
+        <td>received by : ...................................</td>
+        <td>Date : .......................</td>
+      </tr>
+      <tr>
+        <td style="padding: 6px 0;">    5) File</td>
+        <td><div class="print-box-square"></div></td>
+        <td>received by : ...................................</td>
+        <td>Date : .......................</td>
+      </tr>
+    </table>
+
+<div style="font-size: 7px; color: #000; margin-top: 15px; font-weight: bold;">Digital Clearance Form V1.2 2026</div>
+  </div>
+</div>
+
+<script>
+  // ==============================
+  // CONFIG
+  // ==============================
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwCYxQbHWz3yiXcvEZ_kcJKCGJBkJ7mbivT-Usd5Cw3rXX8hB1jyWXJx5ZJ8gyZhbPx/exec';
+  const API_KEY = 'KYS_CLEARANCE_2026_SECURE';
+  const OFFLINE_DRAFT_KEY = 'KYS_Offline_Activity_Draft'; // Key for local storage
+
+const urlParams = new URLSearchParams(window.location.search);
+  let ACTIVITY_ID = urlParams.get('activityId') || '';
+
+const signerDefinitions = [
+    { id: 'app', role: '22. Applicant (Teacher)', defaultName: '', needsApproval: false },
+    { id: 'hm1', role: 'Rahman Housemaster', defaultName: 'Muhammad Hanas bin Shafie', needsApproval: true, printTitle: 'RAHMAN HOUSE', hmLabel: 'Rahman Housemaster', hmisLabel: 'Rahman Housemistress', hmisId: 'hmis1' },
+    { id: 'hm2', role: 'Razak Housemaster', defaultName: 'Muhammad Azim Izzuddin bin Mohd Amin', needsApproval: true, printTitle: 'RAZAK HOUSE', hmLabel: 'Razak Housemaster', hmisLabel: 'Razak Housemistress', hmisId: 'hmis2' },
+    { id: 'hm3', role: 'Hussein Housemaster', defaultName: 'Mohammad Khairul Ashraf bin M. Nor Afandi', needsApproval: true, printTitle: 'HUSSEIN HOUSE', hmLabel: 'Hussein Housemaster', hmisLabel: 'Hussein Housemistress', hmisId: 'hmis3' },
+    { id: 'hmis1', role: 'Rahman Housemistress', defaultName: 'Norhasanah binti Hassan', needsApproval: true },
+    { id: 'hmis2', role: 'Razak Housemistress', defaultName: 'Nurshuhadah binti Zuhaidi', needsApproval: true },
+    { id: 'hmis3', role: 'Hussein Housemistress', defaultName: 'Nur Aishah binti Mohd Dilif', needsApproval: true },
+    { id: 'co3', role: 'Humanities & Social Sci Coord.', defaultName: 'Asrul Azuan bin Mat Dehan', needsApproval: true, printTitle: 'Coordinator, Humanities & Social Science' },
+    { id: 'co2', role: 'Science & Tech Coord.', defaultName: 'Faris bin Azman', needsApproval: true, printTitle: 'Coordinator, Science & Technical' },
+    { id: 'co1', role: 'Sports & Games Coord.', defaultName: 'Rashidi bin Uyob', needsApproval: true, printTitle: 'Coordinator, Sports' }
+  ];
+
+const checklistItems = [
+    "9. Principal's Cover Letter",
+    "10. Proposal of Activity & Tentative Program",
+    "11. Budget Sheet",
+    "12. Student Namelist (including class, house and latest exam result: GPA)",
+    "13. Parent Consent Letter",
+    "14. BP 57 Form",
+    "15. Transportation Request Form",
+    "16. School Facilities Usage Request Form",
+    "17. Cash Advance Request Form",
+    "18. Guest Registration Form",
+    "19. Group Replacement Leave Application Form"
+  ];
+
+const state = {};
+  let completedCount = 0;
+  let accTeachersCount = 0;
+
+// ==============================
+  // EXTRA DATES LOGIC (MAX 4)
+  // ==============================
+  const maxExtraDates = 4;
+  let extraDatesCount = { m20: 0, m21: 0 };
+
+function addExtraDate(section, dateVal = '', qtyVal = '', bVal = false, tVal = false, lVal = false, dVal = false) {
+    if (extraDatesCount[section] >= maxExtraDates) {
+      alert("Maximum of 4 additional dates allowed.");
+      return;
+    }
+    extraDatesCount[section]++;
+    const idSuffix = Date.now() + Math.floor(Math.random() * 1000);
+    const rowId = `${section}_extra_${idSuffix}`;
+
+const tbody = document.getElementById(`${section}_table_body`);
+    const row = document.createElement('tr');
+    row.className = 'extra-date-row';
+    row.id = rowId;
+
+row.innerHTML = `
+      <td><input type="date" class="${section}_extra_date" value="${dateVal}" onchange="document.getElementById('day_${rowId}').innerText = getDayName(this.value) || '-'"></td>
+      <td id="day_${rowId}" style="color: var(--muted); font-size: .8rem; font-weight: bold;">${getDayName(dateVal) || '-'}</td>
+      <td><input type="checkbox" class="${section}_extra_b" ${bVal ? 'checked' : ''}></td>
+      <td><input type="checkbox" class="${section}_extra_t" ${tVal ? 'checked' : ''}></td>
+      <td><input type="checkbox" class="${section}_extra_l" ${lVal ? 'checked' : ''}></td>
+      <td><input type="checkbox" class="${section}_extra_d" ${dVal ? 'checked' : ''}></td>
+      <td><input type="number" class="${section}_extra_qty" value="${qtyVal}" placeholder="Qty" min="0"></td>
+      <td><button type="button" class="btn-remove-date-btn" onclick="removeExtraDate('${section}', '${rowId}')">X</button></td>
+    `;
+    tbody.appendChild(row);
+    saveOfflineDraft(); // Trigger auto-save
+  }
+
+function removeExtraDate(section, rowId) {
+    const row = document.getElementById(rowId);
+    if (row) row.remove();
+    extraDatesCount[section]--;
+    saveOfflineDraft(); // Trigger auto-save
+  }
+
+function getExtraDates(section) {
+    const extras = [];
+    const tbody = document.getElementById(`${section}_table_body`);
+    if (!tbody) return extras;
+    const rows = tbody.querySelectorAll('.extra-date-row');
+    rows.forEach(row => {
+      const d = row.querySelector(`.${section}_extra_date`).value;
+      const q = row.querySelector(`.${section}_extra_qty`).value;
+      const b = row.querySelector(`.${section}_extra_b`).checked;
+      const t = row.querySelector(`.${section}_extra_t`).checked;
+      const l = row.querySelector(`.${section}_extra_l`).checked;
+      const din = row.querySelector(`.${section}_extra_d`).checked;
+
+if (d || q || b || t || l || din) {
+        extras.push({ date: d, qty: q, b: b, t: t, l: l, d: din });
+      }
+    });
+    return extras;
+  }
+
+// ==============================
+  // HELPERS & REAL-TIME SYNC
+  // ==============================
+  const pad0 = n => String(n).padStart(2,'0');
+
+function formatDateStandard(dStr) { return dStr ? dStr.split('-').reverse().join('/') : ""; }
+  // FIX — timezone-safe
+  function getDayName(dStr) {
+    if (!dStr) return "";
+    const [y, m, d] = dStr.split('-').map(Number);
+    const date = new Date(y, m - 1, d); // Local time, bukan UTC
+    return date.toLocaleDateString('en-US', { weekday: 'long' });
+  }
+  function formatTime12h(tStr) {
+    if (!tStr) return "";
+    let [h, m] = tStr.split(':');
+    h = parseInt(h, 10);
+    return `${h % 12 || 12}:${m} ${h >= 12 ? 'PM' : 'AM'}`;
+  }
+  function formatDisplayDate(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    if (isNaN(d)) return dateStr;
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+function formatForDateInput(dStr) {
+    if (!dStr) return '';
+    if (typeof dStr === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dStr.substring(0, 10))) {
+        return dStr.substring(0, 10);
+    }
+    try {
+      const d = new Date(dStr);
+      if (isNaN(d.getTime())) return '';
+      return `${d.getFullYear()}-${pad0(d.getMonth() + 1)}-${pad0(d.getDate())}`;
+    } catch(e) { return ''; }
+  }
+
+function getCurrentActivityLink() {
+    if (ACTIVITY_ID) return window.location.href;
+    const generated = document.getElementById('generated-link').value.trim();
+    return generated || '';
+  }
+
+function setBanner(text) {
+    const el = document.getElementById('activity-banner');
+    el.style.display = 'block';
+    el.innerHTML = text;
+  }
+
+function setButtonLoading(button, isLoading, loadingText, normalText) {
+    if (!button) return;
+    if (isLoading) {
+      button.disabled = true;
+      button.classList.add('is-loading');
+      if (!button.dataset.originalText) { button.dataset.originalText = normalText || button.innerHTML; }
+      button.innerHTML = loadingText || 'Processing...';
+    } else {
+      button.disabled = false;
+      button.classList.remove('is-loading');
+      button.innerHTML = normalText || button.dataset.originalText || button.innerHTML;
+    }
+  }	
+
+function setupRealtimeSync() {
+      const syncFields = (id1, id2) => {
+          const e1 = document.getElementById(id1);
+          const e2 = document.getElementById(id2);
+          if (e1 && e2) {
+              e1.addEventListener('input', () => { e2.value = e1.value; saveOfflineDraft(); });
+              e2.addEventListener('input', () => { e1.value = e2.value; saveOfflineDraft(); });
+          }
+      };
+      syncFields('new_society', 'i_societyName');
+      syncFields('new_activity', 'i_activity');
+      syncFields('new_venue', 'i_venue');
+      syncFields('new_date', 'i_fromDate');
+
+document.getElementById('i_submitDate').addEventListener('input', (e) => {
+        if(!document.getElementById('i_fromDate').value) document.getElementById('i_fromDate').value = e.target.value;
+      });
+  }
+
+function syncMainFormFromCreateBox() {
+    const getVal = id => document.getElementById(id).value;
+    if (getVal('new_society')) document.getElementById('i_societyName').value = getVal('new_society');
+    if (getVal('new_activity')) document.getElementById('i_activity').value = getVal('new_activity');
+    if (getVal('new_venue')) document.getElementById('i_venue').value = getVal('new_venue');
+    if (getVal('new_date')) {
+        document.getElementById('i_fromDate').value = getVal('new_date');
+        if (!document.getElementById('i_submitDate').value) {
+            document.getElementById('i_submitDate').value = getVal('new_date');
+        }
+    }
+  }
+
+function syncCreateBoxFromMainForm() {
+    document.getElementById('new_society').value = document.getElementById('i_societyName').value || '';
+    document.getElementById('new_activity').value = document.getElementById('i_activity').value || '';
+    document.getElementById('new_venue').value = document.getElementById('i_venue').value || '';
+    document.getElementById('new_date').value = document.getElementById('i_fromDate').value || document.getElementById('i_submitDate').value || '';
+  }
+
+function clearOfflineDraftAndReload() {
+      if(confirm("Are you sure you want to clear this form and start a fresh one?")) {
+          localStorage.removeItem(OFFLINE_DRAFT_KEY);
+          window.location.href = window.location.origin + window.location.pathname;
+      }
+  }
+
+// ==============================
+  // OFFLINE AUTO-SAVE LOGIC
+  // ==============================
+  let offlineIndicatorTimeout;
+  function saveOfflineDraft() {
+    const key = ACTIVITY_ID ? OFFLINE_DRAFT_KEY + '_' + ACTIVITY_ID : OFFLINE_DRAFT_KEY;
+    const data = {};
+
+document.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"], input[type="email"], input[type="url"]').forEach(el => {
+        if(el.id && !el.id.startsWith('sel_') && !el.id.startsWith('pin_') && el.id !== 'generated-link') {
+            data[el.id] = el.value;
+        }
+    });
+
+document.querySelectorAll('input[type="checkbox"]').forEach(el => {
+        if(el.id) data[el.id] = el.checked;
+    });
+
+document.querySelectorAll('input[type="radio"]').forEach(el => {
+        if(el.name) {
+            const checkedNode = document.querySelector(`input[name="${el.name}"]:checked`);
+            data[el.name] = checkedNode ? checkedNode.value : null;
+        }
+    });
+
+data['m20_extras'] = getExtraDates('m20');
+data['m21_extras'] = getExtraDates('m21');
+
+Object.keys(state).forEach(function(id) {
+        if (state[id] && state[id].pad && !state[id].pad.isEmpty()) {
+            data['sig_' + id] = state[id].pad.toDataURL();
+            data['sig_status_' + id] = state[id].status;
+            data['sig_approval_' + id] = state[id].approval || 'yes';
+        }
+    });
+
+localStorage.setItem(key, JSON.stringify(data));
+}
+
+function restoreOfflineDraft() {
+    const key = ACTIVITY_ID ? OFFLINE_DRAFT_KEY + '_' + ACTIVITY_ID : OFFLINE_DRAFT_KEY;
+    const raw = localStorage.getItem(key);
+    if (!raw) return;
+
+try {
+    const data = JSON.parse(raw);
+
+Object.keys(data).forEach(key => {
+    const el = document.getElementById(key);
+    if (el) {
+        if (el.type === 'checkbox') { 
+            el.checked = data[key]; 
+        } else { 
+            el.value = data[key]; 
+        }
+    } else {
+        const radios = document.getElementsByName(key);
+        if(radios && radios.length > 0 && data[key]) {
+            const specificRadio = document.querySelector(
+                `input[name="${key}"][value="${data[key]}"]`
+            );
+            if(specificRadio) specificRadio.checked = true;
+        }
+    }
+});
+
+syncCreateBoxFromMainForm(); 
+
+Object.keys(data).forEach(function(key) {
+    if (key.startsWith('sig_') && !key.startsWith('sig_status_') 
+        && !key.startsWith('sig_approval_')) {
+        const id = key.replace('sig_', '');
+        if (state[id] && state[id].pad && data[key]) {
+            try {
+                // Delay untuk pastikan canvas render betul pada mobile
+                setTimeout(() => {
+                 const c = document.getElementById(`canvas_${id}`);
+                    if (c && c.offsetWidth > 0 && state[id] && state[id].pad) {
+                       const r = Math.max(window.devicePixelRatio || 1, 1);
+                        c.width = c.offsetWidth * r;
+                        c.height = c.offsetHeight * r;
+                        c.getContext("2d").scale(r, r);
+                        state[id].pad = new SignaturePad(c, { penColor: "rgb(0,0,0)" });
+                       state[id].pad.fromDataURL(data[key]);
+                   }
+                    state[id].status = data['sig_status_' + id] || 'pending';
+                    state[id].approval = data['sig_approval_' + id] || 'yes';
+                    // TAMBAH INI: Inject data storage ke backup image
+              if (state[id].status === 'signed') {
+                 state[id].finalSig = data[key];
+            }
+                    updateCardUI(id);
+                }, 300);
+            } catch(e) { 
+                console.error('Failed to restore sig:', id, e); 
+            }
+        }
+    }
+});
+calculateProgress();
+
+// Restore Day Texts for Main Rows
+        const m20d = document.getElementById('m20_date');
+        if(m20d && m20d.value) document.getElementById('m20_day_text').innerText = getDayName(m20d.value);
+        const m21d = document.getElementById('m21_date');
+        if(m21d && m21d.value) document.getElementById('m21_day_text').innerText = getDayName(m21d.value);
+
+if (data['m20_extras']) {
+            const tbody20 = document.getElementById('m20_table_body');
+            tbody20.querySelectorAll('.extra-date-row').forEach(e => e.remove());
+            extraDatesCount.m20 = 0;
+            data['m20_extras'].forEach(ex => addExtraDate('m20', ex.date, ex.qty, ex.b, ex.t, ex.l, ex.d));
+        }
+        if (data['m21_extras']) {
+            const tbody21 = document.getElementById('m21_table_body');
+            tbody21.querySelectorAll('.extra-date-row').forEach(e => e.remove());
+            extraDatesCount.m21 = 0;
+            data['m21_extras'].forEach(ex => addExtraDate('m21', ex.date, ex.qty, ex.b, ex.t, ex.l, ex.d));
+        }
+
+} catch(e) { console.error("Failed to restore offline draft:", e); }
+  }
+
+let cloudAutoSaveTimeout;
+  function triggerCloudAutoSave() {
+    if (!ACTIVITY_ID) return;
+
+const indicator = document.getElementById('offline-indicator');
+    indicator.innerHTML = "☁️ Syncing to Cloud...";
+    indicator.style.background = "var(--warning)";
+    indicator.classList.add('show');
+
+clearTimeout(cloudAutoSaveTimeout);
+    cloudAutoSaveTimeout = setTimeout(() => {
+        saveActivityDraft(true);
+    }, 2000);
+  }
+
+document.addEventListener('input', (e) => {
+    if(e.target && e.target.type !== 'file' && !e.target.id?.startsWith('pin_')) {
+        saveOfflineDraft();
+        triggerCloudAutoSave();
+    }
+  });
+  document.addEventListener('change', (e) => {
+    if(e.target && e.target.type !== 'file' && !e.target.id?.startsWith('pin_')) {
+        saveOfflineDraft();
+        triggerCloudAutoSave();
+    }
+  });
+
+// ==============================
+  // PROPOSAL LINK
+  // ==============================
+  document.addEventListener('input', function(e) {
+    if (e.target && e.target.id === 'i_proposalLink') {
+      const btn = document.getElementById('btn_openLink');
+      if (e.target.value.trim() !== "") {
+        btn.style.display = 'inline-flex';
+        btn.href = e.target.value.trim();
+      } else {
+        btn.style.display = 'none';
+      }
+    }
+  });
+
+// ==============================
+  // CREATE ACTIVITY LINK
+  // ==============================
+  async function createNewActivityLink() {
+    const btn = document.getElementById('btnCreateLink');
+    setButtonLoading(btn, true, 'Generating...', 'Generate Unique Link');
+
+const payload = {
+      society: document.getElementById('new_society').value.trim(),
+      activity: document.getElementById('new_activity').value.trim(),
+      venue: document.getElementById('new_venue').value.trim(),
+      submitDate: document.getElementById('new_date').value
+    };
+
+if (!payload.activity) {
+      alert("Please enter activity name.");
+      setButtonLoading(btn, false, '', 'Generate Unique Link');
+      return;
+    }
+
+try {
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+        body: JSON.stringify({ key: API_KEY, action: 'createActivity', payload })
+      });
+
+const result = await res.json();
+      if (!result.success) throw new Error(result.error || result.message || 'Unknown error');
+
+const fullLink = `${window.location.origin}${window.location.pathname}?activityId=${result.activityId}`;
+
+document.getElementById('generated-link-box').style.display = 'block';
+      document.getElementById('generated-link').value = fullLink;
+
+generateWhatsAppMessage(fullLink);
+
+// WIPE BASE OFFLINE DRAFT BEFORE UPDATING URL!
+      localStorage.removeItem(OFFLINE_DRAFT_KEY);
+
+// 1. UPDATE URL WITHOUT RELOADING
+      ACTIVITY_ID = result.activityId;
+      window.history.pushState({path: fullLink}, '', fullLink);
+
+// 2. CRITICAL FIX: Force Sync un-typed JS auto-fill data to main form before saving
+      syncMainFormFromCreateBox();
+
+// 3. CRITICAL FIX: AWAIT Silent Auto-Save BEFORE Alerting User! 
+      await saveActivityDraft(true);
+
+alert("Unique clearance link generated successfully.\n\nYour URL has been updated automatically. Your data is fully saved to the cloud.");
+
+setButtonLoading(btn, false, '', 'Generate Unique Link');
+    } catch (err) {
+      alert("Failed to create link: " + err.message);
+      setButtonLoading(btn, false, '', 'Generate Unique Link');
+    }
+  }
+
+function generateWhatsAppMessage(activityLink) {
+    const activity = document.getElementById('new_activity')?.value.trim() || document.getElementById('i_activity')?.value.trim() || '';
+    const venue = document.getElementById('new_venue')?.value.trim() || document.getElementById('i_venue')?.value.trim() || '';
+    const dateRaw = document.getElementById('new_date')?.value || document.getElementById('i_fromDate')?.value || document.getElementById('i_submitDate')?.value || '';
+    const dateFormatted = formatDisplayDate(dateRaw);
+
+const message = `Greetings.\n\nKindly review and sign the digital clearance form for the following activity:\n\nActivity: ${activity || '[Activity Name]'}\nVenue: ${venue || '[Venue]'}\nDate: ${dateFormatted || '[Date]'}\n\nPlease proceed using the link below:\n${activityLink || '[Activity Link]'}\n\nThank you for your cooperation.`;
+
+document.getElementById('wa-message-box').style.display = 'block';
+    document.getElementById('waMessage').value = message;
+  }
+
+async function copyWhatsAppMessage() {
+    const textarea = document.getElementById('waMessage');
+    if (!textarea.value.trim()) { alert("No WhatsApp message available yet."); return; }
+    try {
+      await navigator.clipboard.writeText(textarea.value);
+      alert("WhatsApp message copied successfully.");
+    } catch (err) {
+      textarea.select(); document.execCommand('copy'); alert("WhatsApp message copied.");
+    }
+  }
+
+function openWhatsAppShare() {
+    const textarea = document.getElementById('waMessage');
+    if (!textarea.value.trim()) { alert("No WhatsApp message available yet."); return; }
+    const encoded = encodeURIComponent(textarea.value);
+    window.open(`https://wa.me/?text=${encoded}`, '_blank');
+  }
+
+function copyGeneratedLink() {
+    const input = document.getElementById('generated-link');
+    if (!input.value.trim()) { 
+        alert("No link generated yet. Please generate a link first."); 
+        return; 
+    }
+    navigator.clipboard.writeText(input.value).then(() => {
+        alert("✅ Activity link copied successfully!\n\nYou may now paste it in WhatsApp.");
+    }).catch(() => {
+        input.select();
+        document.execCommand('copy');
+        alert("✅ Activity link copied!");
+    });
+}
+
+function openGeneratedLink() {
+    const input = document.getElementById('generated-link');
+    const link = input ? input.value.trim() : '';
+    if (!link || !link.startsWith('http')) { 
+        alert("No valid link found. Please generate a link first."); 
+        return; 
+    }
+    window.open(link, '_blank', 'noopener,noreferrer');
+}
+// ==============================
+  // CHECKLIST
+  // ==============================
+  function buildChecklistUI() {
+    const uiCont = document.getElementById('checklist-container');
+    const pCont = document.getElementById('p_checklist_container');
+
+checklistItems.forEach(item => {
+      const num = parseInt(item.split('.')[0], 10);
+      const label = item.substring(item.indexOf('.') + 1).trim();
+
+const row = document.createElement('div');
+      row.className = 'chk-row';
+      row.innerHTML = `
+        <div class="chk-label">${num}. ${label}</div>
+        <div class="chk-options">
+          <label><input type="radio" name="chk_${num}" value="attached"> Att</label>
+          <label><input type="radio" name="chk_${num}" value="pending"> Pen</label>
+          <label><input type="radio" name="chk_${num}" value="na"> N/A</label>
+        </div>
+        <input type="text" id="chk_rmk_${num}" placeholder="Short remark..." style="width:30%; padding:4px 8px; border:1px solid var(--border); border-radius:4px; font-size:.75rem;">
+      `;
+      uiCont.appendChild(row);
+
+const tr = document.createElement('tr');
+tr.innerHTML = `
+        <td style="white-space: nowrap; padding-right: 10px; height: 16px;">${num}. ${label}</td>
+        <td align="center" style="width:55px;"><div class="print-box-square" id="p_chk_${num}_a"></div></td>
+        <td align="center" style="width:55px;"><div class="print-box-square" id="p_chk_${num}_p"></div></td>
+        <td align="center" style="width:60px;"><div class="print-box-square" id="p_chk_${num}_n"></div></td>
+        <td style="width:100%; vertical-align:bottom; position:relative;">
+          <span id="p_chk_rmk_${num}" style="position:absolute; bottom:4px; left:10px; font-size:8px;"></span>
+          <div style="border-bottom:1px dotted #000; width:100%; height:10px; margin-bottom:3px;"></div>
+        </td>
+      `;
+      pCont.appendChild(tr);
+    });
+  }
+
+// ==============================
+  // PRINT BLOCKS
+  // ==============================
+  function buildPrintBlocks() {
+    const houseCont = document.getElementById('house-blocks-container');
+    let hmIdx = 1;
+
+signerDefinitions.filter(s => s.id.startsWith('hm') && !s.id.startsWith('hmis')).forEach(s => {
+      houseCont.innerHTML += `
+        <div class="house-block">
+          <div class="house-title">${s.printTitle}</div>
+          <table style="width:100%; font-size:10px; border-collapse:collapse;">
+            <tr>
+              <td style="width:200px;">24.${hmIdx} : Clearance / Comments / Approval</td>
+              <td style="width:10px;">:</td>
+              <td style="width:40px; text-align:right; padding-right:5px;">Yes</td>
+              <td style="width:25px;"><div class="print-box-square" id="p_${s.id}_yes"></div></td>
+              <td style="border-bottom:1px dotted #000; position:relative; height:20px;">
+                <span id="p_cmt_${s.hmisId}" style="position:absolute; bottom:2px; font-size:10px; padding-left:5px;"></span>
+              </td>
+            </tr>
+            <tr>
+              <td></td><td></td>
+              <td style="text-align:right; padding-top:10px; padding-right:5px;">No</td>
+              <td style="padding-top:10px;"><div class="print-box-square" id="p_${s.id}_no"></div></td>
+              <td style="border-bottom:1px dotted #000; position:relative; height:25px;">
+                <span id="p_cmt_${s.id}" style="position:absolute; bottom:2px; font-size:10px; padding-left:5px;"></span>
+              </td>
+            </tr>
+          </table>
+
+<table style="width:100%; margin-top:25px; table-layout:fixed;">
+            <tr>
+              <td style="width:50%; text-align:center; padding-right:10px;">
+                <div style="position:relative; border-bottom:1px dashed #000; height:30px; width:180px; margin:0 auto;">
+                  <img id="p_img_${s.hmisId}" style="display:none; position:absolute; bottom:2px; left:50%; transform:translateX(-50%); height:35px; object-fit:contain;">
+                </div>
+                <div style="font-size:9px; margin-top:3px;">${s.hmisLabel}</div>
+              </td>
+              <td style="width:50%; text-align:center; padding-left:10px;">
+                <div style="position:relative; border-bottom:1px dashed #000; height:30px; width:180px; margin:0 auto;">
+                  <img id="p_img_${s.id}" style="display:none; position:absolute; bottom:2px; left:50%; transform:translateX(-50%); height:35px; object-fit:contain;">
+                </div>
+                <div style="font-size:9px; margin-top:3px;">${s.hmLabel}</div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      `;
+      hmIdx++;
+    });
+
+const coordCont = document.getElementById('coord-blocks-container');
+    let coIdx = 1;
+
+signerDefinitions.filter(s => s.id.startsWith('co')).forEach(s => {
+      coordCont.innerHTML += `
+        <div class="house-block">
+          <div class="house-title" style="text-decoration:none;">${s.printTitle}</div>
+          <table style="width:100%; font-size:10px; border-collapse:collapse;">
+            <tr>
+              <td style="width:200px;">25.${coIdx} : Clearance / Comments / Approval</td>
+              <td style="width:10px;">:</td>
+              <td style="width:40px; text-align:right; padding-right:5px;">Yes</td>
+              <td style="width:25px;"><div class="print-box-square" id="p_${s.id}_yes"></div></td>
+              <td style="border-bottom:1px dotted #000; position:relative; height:20px;">
+                <span id="p_cmt_${s.id}" style="position:absolute; bottom:2px; font-size:10px; padding-left:5px;"></span>
+              </td>
+            </tr>
+            <tr>
+              <td></td><td></td>
+              <td style="text-align:right; padding-top:10px; padding-right:5px;">No</td>
+              <td style="padding-top:10px;"><div class="print-box-square" id="p_${s.id}_no"></div></td>
+              <td style="border-bottom:1px dotted #000; height:25px;"></td>
+            </tr>
+          </table>
+
+<div style="width:250px; float:right; margin-top:25px; text-align:center;">
+            <div style="position:relative; border-bottom:1px dashed #000; height:30px; width:180px; margin:0 auto;">
+              <img id="p_img_${s.id}" style="display:none; position:absolute; bottom:2px; left:50%; transform:translateX(-50%); height:35px; object-fit:contain;">
+            </div>
+            <div style="font-size:9px; margin-top:3px;">${s.printTitle}</div>
+          </div>
+          <div style="clear:both;"></div>
+        </div>
+      `;
+      coIdx++;
+    });
+  }
+
+// ==============================
+  // SIGNATURE UI
+  // ==============================
+  function buildSignatureUI() {
+    const container = document.getElementById('signatures-container');
+
+signerDefinitions.forEach(s => {
+      state[s.id] = { pad: null, status: 'pending', approval: 'yes' };
+      const readOnlyInput = s.defaultName ? `readonly style="background:#e2e8f0; cursor:not-allowed;"` : `placeholder="Enter your name" required`;
+      let approvalDropdown = '';
+      let commentField = '';
+
+if (s.needsApproval) {
+        approvalDropdown = `
+          <div class="field" style="margin-bottom:8px;">
+            <select id="appr_${s.id}" style="border-color:var(--brand); color:var(--brand); font-weight:800;">
+              <option value="yes">Approve (Tick YES)</option>
+              <option value="no">Reject (Tick NO)</option>
+            </select>
+          </div>
+        `;
+        commentField = `
+          <div class="field" style="margin-bottom:8px;">
+            <input type="text" id="cmt_${s.id}" placeholder="Short comment (optional)" maxlength="120">
+          </div>
+        `;
+      }
+
+const card = document.createElement('div');
+      card.className = 'sig-card';
+      card.id = `card_${s.id}`;
+      card.innerHTML = `
+        <div class="sig-card-header"><span>${s.role}</span><span class="sig-badge" id="badge_${s.id}">Pending</span></div>
+        <div class="field" style="margin-bottom:8px;"><input type="text" id="sel_${s.id}" value="${s.defaultName}" ${readOnlyInput}></div>
+        ${approvalDropdown}
+        ${commentField}
+        <div class="field" style="margin-bottom:8px; display:flex; gap:5px;">
+          <input type="password" id="pin_${s.id}" placeholder="Enter PIN" required style="flex:1;">
+          <button type="button" class="btn-getpin" onclick="requestPin('${s.id}')" id="btn_req_${s.id}">Get PIN</button>
+        </div>
+        <div class="sig-wrapper">
+          <canvas id="canvas_${s.id}"></canvas>
+          <div class="locked-overlay">Locked</div>
+        </div>
+        <div class="sig-actions">
+          <button type="button" class="btn-action btn-clear" onclick="clearPad('${s.id}')">Clear</button>
+          <button type="button" class="btn-action btn-submit" id="btn_submit_${s.id}" onclick="submitStatus('${s.id}', 'signed')">Verify & Lock</button>
+          <button type="button" class="btn-action btn-undo" onclick="undoStatus('${s.id}')">Unlock</button>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+function initPads() {
+    const ratio = Math.max(window.devicePixelRatio || 1, 1);
+    Object.keys(state).forEach(id => {
+      const canvas = document.getElementById(`canvas_${id}`);
+      if (!canvas) return;
+      canvas.width = canvas.offsetWidth * ratio;
+      canvas.height = canvas.offsetHeight * ratio;
+      canvas.getContext("2d").scale(ratio, ratio);
+      state[id].pad = new SignaturePad(canvas, { penColor: "rgb(0,0,0)" });
+    });
+  }
+
+function addAccTeacher(prefillName = '', prefillSig = '') {
+    if (accTeachersCount >= 25) { alert("Maximum of 25 accompanying teachers allowed."); return; }
+    accTeachersCount++;
+    const tId = `acc_${accTeachersCount}`;
+    state[tId] = { pad: null, status: 'pending', isAcc: true };
+
+const container = document.getElementById('accompanying-teachers-container');
+    const card = document.createElement('div');
+    card.className = 'sig-card teacher-card';
+    card.id = `card_${tId}`;
+
+card.innerHTML = `
+  <div class="sig-card-header"><span>Teacher ${accTeachersCount}</span>
+    <span class="sig-badge" id="badge_${tId}">Pending</span>
+  </div>
+  <div class="field" style="margin-bottom:8px;">
+    <input type="text" id="sel_${tId}" placeholder="Enter full name" value="${prefillName}">
+  </div>
+  <div class="field" style="margin-bottom:8px; display:flex; gap:5px;">
+    <input type="password" id="pin_${tId}" placeholder="Enter PIN" style="flex:1;">
+    <button type="button" class="btn-getpin" onclick="requestPin('${tId}')" 
+      id="btn_req_${tId}">Get PIN</button>
+  </div>
+  <div class="sig-wrapper">
+    <canvas id="canvas_${tId}"></canvas>
+    <div class="locked-overlay">Locked</div>
+  </div>
+  <div class="sig-actions">
+    <button type="button" class="btn-action btn-clear" onclick="clearPad('${tId}')">Clear</button>
+    <button type="button" class="btn-action btn-submit" id="btn_submit_${tId}" 
+      onclick="submitStatus('${tId}', 'signed')">Verify & Lock</button>
+    <button type="button" class="btn-action btn-undo" onclick="undoStatus('${tId}')">↩ Re-sign</button>
+  </div>
+  <button type="button" class="btn-remove-teacher" 
+    onclick="removeAccTeacher('${tId}')">✕ Remove Teacher</button>
+`;
+    container.appendChild(card);
+
+const canvas = document.getElementById(`canvas_${tId}`);
+    const ratio = Math.max(window.devicePixelRatio || 1, 1);
+    canvas.width = canvas.offsetWidth * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    canvas.getContext("2d").scale(ratio, ratio);
+    state[tId].pad = new SignaturePad(canvas, { penColor: "rgb(0,0,0)" });
+
+if (prefillSig) {
+    try {
+        // Delay untuk pastikan canvas ada saiz betul pada mobile
+        setTimeout(() => {
+            const c = document.getElementById(`canvas_${tId}`);
+            if (c && c.offsetWidth > 0) {
+                const r = Math.max(window.devicePixelRatio || 1, 1);
+                c.width = c.offsetWidth * r;
+                c.height = c.offsetHeight * r;
+                c.getContext("2d").scale(r, r);
+                state[tId].pad = new SignaturePad(c, { penColor: "rgb(0,0,0)" });
+            }
+            state[tId].pad.fromDataURL(prefillSig);
+            state[tId].status = 'signed';
+            updateCardUI(tId);
+        }, 300);
+    } catch(e) { console.error('prefillSig error:', e); }
+  }
+}
+
+function removeAccTeacher(tId) {
+    const nameField = document.getElementById(`sel_${tId}`);
+    const teacherName = nameField ? nameField.value.trim() : '';
+    const displayName = teacherName || 'this teacher/staff';
+
+// Custom confirmation dialog
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+        position:fixed; top:0; left:0; width:100%; height:100%;
+        background:rgba(0,0,0,0.6); z-index:99999;
+        display:flex; justify-content:center; align-items:center;
+        padding:20px; box-sizing:border-box;
+    `;
+
+overlay.innerHTML = `
+        <div style="background:white; border-radius:14px; padding:28px 24px;
+                    max-width:420px; width:100%; box-shadow:0 20px 60px rgba(0,0,0,0.3);
+                    font-family:'Inter',sans-serif; text-align:center;">
+            <div style="font-size:2.5rem; margin-bottom:12px;">⚠️</div>
+            <h3 style="color:#0f172a; font-size:1.05rem; font-weight:800; 
+                       margin-bottom:10px;">Remove Accompanying Teacher?</h3>
+            <p style="color:#475569; font-size:0.88rem; line-height:1.6; 
+                      margin-bottom:6px;">
+                You are about to remove 
+                <strong style="color:#dc2626;">"${displayName}"</strong> 
+                from the accompanying teacher list.
+            </p>
+            <p style="color:#dc2626; font-size:0.82rem; font-weight:700;
+                      background:#fef2f2; padding:8px 12px; border-radius:6px;
+                      margin-bottom:20px;">
+                ⛔ This action is permanent and cannot be undone.
+            </p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <button id="btn_cancel_remove" 
+                    style="padding:12px; border-radius:8px; border:2px solid #1d4ed8;
+                           background:#1d4ed8; color:white; font-weight:800;
+                           font-size:0.92rem; cursor:pointer; font-family:inherit;">
+                    ← Keep Teacher
+                </button>
+                <button id="btn_confirm_remove"
+                    style="padding:12px; border-radius:8px; border:2px solid #e2e8f0;
+                           background:#f8fafc; color:#94a3b8; font-weight:600;
+                           font-size:0.82rem; cursor:pointer; font-family:inherit;">
+                    Remove
+                </button>
+            </div>
+            <p style="color:#94a3b8; font-size:0.72rem; margin-top:10px;">
+                Tap <strong>Keep Teacher</strong> to cancel this action.
+            </p>
+        </div>
+    `;
+
+document.body.appendChild(overlay);
+
+// Cancel = prominent blue button (kiri)
+    document.getElementById('btn_cancel_remove').onclick = () => {
+        document.body.removeChild(overlay);
+    };
+
+// Confirm Remove = grey subtle button (kanan)
+    document.getElementById('btn_confirm_remove').onclick = () => {
+        document.body.removeChild(overlay);
+        const el = document.getElementById(`card_${tId}`);
+        if (el) el.remove();
+        delete state[tId];
+        calculateProgress();
+    };
+
+// Klik luar dialog = cancel
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) document.body.removeChild(overlay);
+    });
+}
+
+function clearPad(id) { if (state[id] && state[id].pad) state[id].pad.clear(); }
+
+async function requestPin(id) {
+    const inputField = document.getElementById(`sel_${id}`);
+    if (!inputField.value.trim()) { alert("Name cannot be blank."); return; }
+
+const btn = document.getElementById(`btn_req_${id}`);
+    const ogText = btn.innerText;
+    btn.innerText = "Sending...";
+    btn.disabled = true;
+
+try {
+      const res = await fetch(`${SCRIPT_URL}?action=requestPin&name=${encodeURIComponent(inputField.value)}`);
+      const data = await res.json();
+      if (data.success) { alert(`✅ ${data.message}\n(Hint: Contact ends with ${data.contactHint || '****'})`); } else { alert(`❌ Failed: ${data.message}`); }
+    } catch (err) { alert("Connection error: " + err.message + "\n\nPlease check your SCRIPT_URL."); } finally { btn.innerText = ogText; btn.disabled = false; }
+  }
+
+async function saveSingleSignature(id) {
+    if (!ACTIVITY_ID) return;
+    const def = signerDefinitions.find(s => s.id === id);
+    const payload = {
+      activityId: ACTIVITY_ID,
+      signerId: id,
+      role: def ? def.role : id,
+      signerName: document.getElementById(`sel_${id}`)?.value || '',
+      approval: document.getElementById(`appr_${id}`)?.value || '',
+      comment: document.getElementById(`cmt_${id}`)?.value || '',
+      signatureDataUrl: state[id].pad.toDataURL(),
+      signedAt: new Date().toISOString()
+    };
+    const res = await fetch(SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, body: JSON.stringify({ key: API_KEY, action: 'saveSignature', payload }) });
+    const result = await res.json();
+    if (!result.success) throw new Error(result.error || result.message || 'Failed to save signature');
+  }
+
+async function submitStatus(id, newStatus) {
+    const inputField = document.getElementById(`sel_${id}`);
+    const pinField = document.getElementById(`pin_${id}`);
+    const apprField = document.getElementById(`appr_${id}`);
+    const submitBtn = document.getElementById(`btn_submit_${id}`);
+
+if (newStatus === 'signed') {
+      if (!inputField.value.trim()) { alert("Name cannot be blank."); return; }
+      if (!pinField.value.trim()) { alert("Please enter your PIN."); return; }
+      if (state[id].pad.isEmpty()) { alert("Please provide a signature."); return; }
+
+const originalText = submitBtn.innerText;
+      submitBtn.innerText = "Verifying...";
+      submitBtn.disabled = true;
+
+try {
+        const res = await fetch(`${SCRIPT_URL}?action=verifyPin&name=${encodeURIComponent(inputField.value)}&pin=${encodeURIComponent(pinField.value)}`);
+        const data = await res.json();
+        if (!data.verified) { alert("❌ Invalid PIN. Try again."); submitBtn.innerText = originalText; submitBtn.disabled = false; return; }
+      } catch (err) { alert("Database error: " + err.message); submitBtn.innerText = originalText; submitBtn.disabled = false; return; }
+
+if (apprField) state[id].approval = apprField.value;
+      state[id].status = newStatus;
+
+try { await saveSingleSignature(id); } catch (err) { alert("Signature verified, but failed to save online: " + err.message); }
+
+submitBtn.innerText = originalText;
+      submitBtn.disabled = false;
+    }
+
+updateCardUI(id);
+    calculateProgress();
+  }
+
+async function undoStatus(id) {
+    const inputField = document.getElementById(`sel_${id}`);
+    const name = inputField ? inputField.value.trim() : '';
+
+// Minta PIN sebelum benarkan unlock
+    const pin = prompt(
+        `PIN verification required to unlock signature.\n\n` +
+        `Name: ${name}\n\n` +
+        `Please enter your PIN to proceed:`
+    );
+
+if (!pin || !pin.trim()) {
+        alert("❌ Unlock cancelled. PIN is required.");
+        return;
+    }
+
+// Tunjuk loading
+    const btn = document.getElementById(`btn_submit_${id}`);
+    const undoBtn = document.querySelector(`#card_${id} .btn-undo`);
+    if (undoBtn) { 
+        undoBtn.disabled = true; 
+        undoBtn.innerText = 'Verifying...'; 
+    }
+
+try {
+        const res = await fetch(
+            `${SCRIPT_URL}?action=verifyPin` +
+            `&name=${encodeURIComponent(name)}` +
+            `&pin=${encodeURIComponent(pin.trim())}`
+        );
+        const data = await res.json();
+
+if (!data.verified) {
+            alert("❌ Invalid PIN. You are not authorised to unlock this signature.");
+            if (undoBtn) { 
+                undoBtn.disabled = false; 
+                undoBtn.innerText = '↩ Re-sign'; 
+            }
+            return;
+        }
+
+// PIN betul — benarkan unlock
+        state[id].status = 'pending';
+        if (state[id].pad) state[id].pad.clear();
+        updateCardUI(id);
+        calculateProgress();
+        alert(`✅ Signature for "${name}" has been unlocked.\nPlease re-sign when ready.`);
+
+} catch (err) {
+        alert("Connection error: " + err.message);
+        if (undoBtn) { 
+            undoBtn.disabled = false; 
+            undoBtn.innerText = '↩ Re-sign'; 
+        }
+    }
+}
+
+function updateCardUI(id) {
+    const card = document.getElementById(`card_${id}`);
+    const badge = document.getElementById(`badge_${id}`);
+    const pinField = document.getElementById(`pin_${id}`);
+    const apprField = document.getElementById(`appr_${id}`);
+    const cmtField = document.getElementById(`cmt_${id}`);
+    const nameField = document.getElementById(`sel_${id}`);
+    const canvas = document.getElementById(`canvas_${id}`);
+
+if (!card || !badge || !pinField) return;
+    card.classList.remove('signed');
+
+if (state[id].status === 'signed') {
+        card.classList.add('signed');
+        badge.innerText = 'Verified ✅';
+        pinField.disabled = true;
+        if (apprField) apprField.disabled = true;
+        if (cmtField) cmtField.disabled = true;
+
+// Lock nama field
+        if (nameField) {
+            nameField.readOnly = true;
+            nameField.style.background = '#e2e8f0';
+            nameField.style.cursor = 'not-allowed';
+        }
+
+// Sembunyikan canvas — papar signature sebagai img sahaja
+        if (canvas) canvas.style.visibility = 'hidden';
+
+const overlay = card.querySelector('.locked-overlay');
+if (overlay) {
+    // TAMBAH INI: Simpan data imej secara kekal supaya selamat dari resize bug
+    if (!state[id].finalSig && state[id].pad && !state[id].pad.isEmpty()) {
+        state[id].finalSig = state[id].pad.toDataURL();
+    }
+    const sigDataUrl = state[id].finalSig || '';
+    
+    overlay.style.background = 'rgba(240,253,244,0.92)';
+
+            overlay.innerHTML = sigDataUrl
+                ? `<div style="display:flex;flex-direction:column;
+                               align-items:center;width:100%;height:100%;
+                               justify-content:center;">
+                     <img src="${sigDataUrl}" 
+                          style="max-height:80px;max-width:92%;
+                                 object-fit:contain;">
+                     <span style="font-size:.7rem;color:var(--success);
+                                  font-weight:800;margin-top:4px;">
+                       ✅ Verified
+                     </span>
+                   </div>`
+                : `<span style="color:var(--success);font-weight:800;">
+                     ✅ Verified
+                   </span>`;
+        }
+
+} else {
+        badge.innerText = 'Pending';
+        pinField.disabled = false;
+        if (apprField) apprField.disabled = false;
+        if (cmtField) cmtField.disabled = false;
+
+// Unlock nama field
+        if (nameField) {
+            nameField.readOnly = false;
+            nameField.style.background = '';
+            nameField.style.cursor = '';
+        }
+
+// Tunjuk semula canvas, reset overlay
+        if (canvas) canvas.style.visibility = 'visible';
+
+const overlay = card.querySelector('.locked-overlay');
+        if (overlay) {
+            overlay.style.background = '';
+            overlay.innerHTML = 'Locked';
+        }
+    }
+}
+
+function calculateProgress() {
+    completedCount = 0;
+    signerDefinitions.forEach(s => { if (state[s.id] && state[s.id].status === 'signed') completedCount++; });
+    const pt = document.getElementById('progress-text');
+    pt.innerText = `${completedCount} / 10`;
+
+if (completedCount === 10) {
+      pt.classList.add('complete');
+      document.getElementById('print-container').style.display = 'block';
+    } else {
+      pt.classList.remove('complete');
+      document.getElementById('print-container').style.display = 'none';
+    }
+  }
+
+// ==============================
+  // SAVE / LOAD ACTIVITY
+  // ==============================
+  async function saveActivityDraft(isSilent = false) {
+    const btn = document.getElementById('btnSaveDraft');
+    if (!isSilent) setButtonLoading(btn, true, 'Saving...', 'Save Draft Activity (Auto-Saves while typing)');
+
+if (!ACTIVITY_ID) {
+      if (!isSilent) alert("No activity link found yet. Please generate a unique activity link first.");
+      if (!isSilent) setButtonLoading(btn, false, '', 'Save Draft Activity (Auto-Saves while typing)');
+      return;
+    }
+
+const checklistData = {};
+    checklistItems.forEach(item => {
+        const num = parseInt(item.split('.')[0], 10);
+        const checked = document.querySelector(`input[name="chk_${num}"]:checked`);
+        const rmkObj = document.getElementById(`chk_rmk_${num}`);
+        checklistData[num] = { val: checked ? checked.value : '', remark: rmkObj ? rmkObj.value : '' };
+    });
+
+const mealsData = {
+        m20: { b: document.getElementById('m20_b').checked, t: document.getElementById('m20_t').checked, l: document.getElementById('m20_l').checked, d: document.getElementById('m20_d').checked, date: document.getElementById('m20_date').value, qty: document.getElementById('m20_qty').value, extras: getExtraDates('m20') },
+        m21: { b: document.getElementById('m21_b').checked, t: document.getElementById('m21_t').checked, l: document.getElementById('m21_l').checked, d: document.getElementById('m21_d').checked, date: document.getElementById('m21_date').value, qty: document.getElementById('m21_qty').value, extras: getExtraDates('m21') }
+    };
+
+const accTeachersArray = [];
+    Object.keys(state).filter(k => state[k].isAcc).forEach(tId => {
+        accTeachersArray.push({
+            signerName: document.getElementById(`sel_${tId}`)?.value || '',
+            signatureDataUrl: state[tId].status === 'signed' ? state[tId].pad.toDataURL() : '',
+            status: state[tId].status
+        });
+    });
+
+const payload = {
+      activityId: ACTIVITY_ID,
+      submitDate: document.getElementById('i_submitDate').value,
+      submitTime: document.getElementById('i_submitTime').value,
+      society: document.getElementById('i_societyName').value,
+      activity: document.getElementById('i_activity').value,
+      venue: document.getElementById('i_venue').value,
+      fromDate: document.getElementById('i_fromDate').value,
+      fromTime: document.getElementById('i_fromTime').value,
+      toDate: document.getElementById('i_toDate').value,
+      toTime: document.getElementById('i_toTime').value,
+      boys: document.getElementById('i_boys').value,
+      girls: document.getElementById('i_girls').value,
+      accommodation: document.getElementById('i_accommodation').value,
+      proposalLink: document.getElementById('i_proposalLink').value,
+
+checklist: JSON.stringify(checklistData),
+      meals: JSON.stringify(mealsData),
+      checklistJSON: JSON.stringify(checklistData),
+      mealsJSON: JSON.stringify(mealsData),
+      accTeachers: JSON.stringify(accTeachersArray)
+    };
+
+try {
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+        body: JSON.stringify({ key: API_KEY, action: 'saveActivityDraft', payload })
+      });
+
+const result = await res.json();
+      if (!result.success) throw new Error(result.error || result.message || 'Draft save failed');
+
+syncCreateBoxFromMainForm();
+
+if (isSilent) {
+          const indicator = document.getElementById('offline-indicator');
+          indicator.innerHTML = "✅ Saved to Cloud";
+          indicator.style.background = "var(--success)";
+          indicator.classList.add('show');
+          setTimeout(() => { indicator.classList.remove('show'); }, 3000);
+      } else {
+          alert("Draft saved successfully to the cloud.");
+          setButtonLoading(btn, false, '', 'Save Draft Activity (Auto-Saves while typing)');
+      }
+
+const key = ACTIVITY_ID ? OFFLINE_DRAFT_KEY + '_' + ACTIVITY_ID : OFFLINE_DRAFT_KEY;
+      localStorage.removeItem(key);
+
+} catch (err) {
+      if (isSilent) {
+          const indicator = document.getElementById('offline-indicator');
+          indicator.innerHTML = "⚠️ Offline - Saved Locally";
+          indicator.style.background = "var(--danger)";
+          indicator.classList.add('show');
+          setTimeout(() => { indicator.classList.remove('show'); }, 4000);
+      } else {
+          alert("Failed to save draft to cloud: " + err.message);
+          setButtonLoading(btn, false, '', 'Save Draft Activity (Auto-Saves while typing)');
+      }
+    }
+  }
+
+async function loadActivityRecord(activityId) {
+    try {
+      const res = await fetch(`${SCRIPT_URL}?action=getActivity&activityId=${encodeURIComponent(activityId)}`);
+      const data = await res.json();
+
+if (!data.success) { alert("Failed to load activity: " + (data.message || 'Unknown error')); return; }
+
+const a = data.activity || {};
+      const sigs = data.signatures || [];
+
+setBanner(`<strong>Loaded Activity ID:</strong> ${activityId}<br>This form is linked to one activity record. Share this same link with the relevant teachers for digital signature.`);
+
+document.getElementById('generated-link-box').style.display = 'block';
+      document.getElementById('generated-link').value = window.location.href;
+
+document.getElementById('i_submitDate').value = formatForDateInput(a.submitDate);
+      document.getElementById('i_submitTime').value = a.submitTime || '';
+      document.getElementById('i_societyName').value = a.society || a.societyName || a.class || '';
+      document.getElementById('i_activity').value = a.activity || a.activityName || '';
+      document.getElementById('i_venue').value = a.venue || a.venueName || '';
+      document.getElementById('i_fromDate').value = formatForDateInput(a.fromDate || a.date);
+      document.getElementById('i_fromTime').value = a.fromTime || '';
+      document.getElementById('i_toDate').value = formatForDateInput(a.toDate);
+      document.getElementById('i_toTime').value = a.toTime || '';
+      document.getElementById('i_boys').value = a.boys || 0;
+      document.getElementById('i_girls').value = a.girls || 0;
+      document.getElementById('i_accommodation').value = a.accommodation || '';
+      document.getElementById('i_proposalLink').value = a.proposalLink || '';
+
+if (a.proposalLink) {
+        const btn = document.getElementById('btn_openLink');
+        btn.style.display = 'inline-flex';
+        btn.href = a.proposalLink;
+      }
+
+let parsedChecklist = null;
+      let rawChecklist = a.checklistJSON || a.checklist;
+
+if (typeof rawChecklist === 'string') {
+          if (rawChecklist !== '[object Object]') {
+              try { parsedChecklist = JSON.parse(rawChecklist); } catch(e) { console.error('Checklist parse error', e); }
+          }
+      } else if (typeof rawChecklist === 'object') {
+          parsedChecklist = rawChecklist;
+      }
+
+if (parsedChecklist) {
+          Object.keys(parsedChecklist).forEach(num => {
+              const chk = parsedChecklist[num];
+              if (chk && chk.val) {
+                  const radio = document.querySelector(`input[name="chk_${num}"][value="${chk.val}"]`);
+                  if(radio) radio.checked = true;
+              }
+              const rmk = document.getElementById(`chk_rmk_${num}`);
+              if(rmk) rmk.value = (chk && chk.remark) ? chk.remark : '';
+          });
+      }
+
+let parsedMeals = null;
+      let rawMeals = a.mealsJSON || a.meals;
+
+if (typeof rawMeals === 'string') {
+          if (rawMeals !== '[object Object]') {
+              try { parsedMeals = JSON.parse(rawMeals); } catch(e) { console.error('Meals parse error', e); }
+          }
+      } else if (typeof rawMeals === 'object') {
+          parsedMeals = rawMeals;
+      }
+
+if (parsedMeals) {
+          if (parsedMeals.m20) {
+              document.getElementById('m20_b').checked = parsedMeals.m20.b || false;
+              document.getElementById('m20_t').checked = parsedMeals.m20.t || false;
+              document.getElementById('m20_l').checked = parsedMeals.m20.l || false;
+              document.getElementById('m20_d').checked = parsedMeals.m20.d || false;
+              document.getElementById('m20_date').value = formatForDateInput(parsedMeals.m20.date);
+              document.getElementById('m20_qty').value = parsedMeals.m20.qty || '';
+
+if (parsedMeals.m20.extras) {
+                  const tbody20 = document.getElementById('m20_table_body');
+                  tbody20.querySelectorAll('.extra-date-row').forEach(e => e.remove());
+                  extraDatesCount.m20 = 0;
+                  parsedMeals.m20.extras.forEach(ex => addExtraDate('m20', ex.date, ex.qty, ex.b, ex.t, ex.l, ex.d));
+              }
+          }
+          if (parsedMeals.m21) {
+              document.getElementById('m21_b').checked = parsedMeals.m21.b || false;
+              document.getElementById('m21_t').checked = parsedMeals.m21.t || false;
+              document.getElementById('m21_l').checked = parsedMeals.m21.l || false;
+              document.getElementById('m21_d').checked = parsedMeals.m21.d || false;
+              document.getElementById('m21_date').value = formatForDateInput(parsedMeals.m21.date);
+              document.getElementById('m21_qty').value = parsedMeals.m21.qty || '';
+
+if (parsedMeals.m21.extras) {
+                  const tbody21 = document.getElementById('m21_table_body');
+                  tbody21.querySelectorAll('.extra-date-row').forEach(e => e.remove());
+                  extraDatesCount.m21 = 0;
+                  parsedMeals.m21.extras.forEach(ex => addExtraDate('m21', ex.date, ex.qty, ex.b, ex.t, ex.l, ex.d));
+              }
+          }
+      }
+
+syncCreateBoxFromMainForm();
+
+// Update Day Texts for Main Rows
+      const m20d = document.getElementById('m20_date');
+      if(m20d && m20d.value) document.getElementById('m20_day_text').innerText = getDayName(m20d.value);
+      const m21d = document.getElementById('m21_date');
+      if(m21d && m21d.value) document.getElementById('m21_day_text').innerText = getDayName(m21d.value);
+
+sigs.forEach(sig => {
+        const id = sig.signerId;
+        if (!state[id]) return;
+        const sel = document.getElementById(`sel_${id}`);
+        const appr = document.getElementById(`appr_${id}`);
+        const cmt = document.getElementById(`cmt_${id}`);
+
+if (sel && sig.signerName) sel.value = sig.signerName;
+        if (appr && sig.approval) appr.value = sig.approval;
+        if (cmt && sig.comment) cmt.value = sig.comment;
+
+        if (sig.signatureDataUrl) {
+        if (state[id].pad) {
+        try { state[id].pad.fromDataURL(sig.signatureDataUrl); } catch(e) {}
+           }
+           // TAMBAH INI: Inject terus ke backup image
+           state[id].finalSig = sig.signatureDataUrl; 
+          }
+          state[id].status = 'signed';
+          updateCardUI(id);
+      });
+
+let accDraftRaw = a.accTeachers || a.accTeachersJSON || '[]';
+      let accSigs = [];
+      try {
+          if (typeof accDraftRaw === 'string' && accDraftRaw !== '[object Object]') {
+              accSigs = JSON.parse(accDraftRaw);
+          } else if (Array.isArray(accDraftRaw)) {
+              accSigs = accDraftRaw;
+          }
+      } catch(e) { console.error('AccTeachers parse error', e); }
+
+if (!accSigs || accSigs.length === 0) {
+          accSigs = data.accTeachers || [];
+      }
+
+accSigs.forEach(t => { 
+          addAccTeacher(t.signerName || t.name || '', t.signatureDataUrl || t.signature || ''); 
+      });
+
+calculateProgress();
+      generateWhatsAppMessage(window.location.href);
+      restoreOfflineDraft();
+
+} catch (err) { alert("Load error: " + err.message); }
+  }
+
+// ==============================
+  // PDF GENERATION & FINAL SUBMIT
+  // ==============================
+  async function generatePdfBase64() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p','mm','a4');
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const printWidth = pageWidth;
+
+const pages = ['print-page-1', 'print-page-2', 'print-page-3', 'print-page-4'];
+
+for (let i = 0; i < pages.length; i++) {
+      const pageElement = document.getElementById(pages[i]);
+      pageElement.classList.add('offscreen-render');
+
+const canvas = await html2canvas(pageElement, { scale: 1.5, backgroundColor: "#ffffff" });
+      pageElement.classList.remove('offscreen-render');
+
+const imgData = canvas.toDataURL('image/jpeg', 0.82);
+      const imgProps = pdf.getImageProperties(imgData);
+      const printHeight = imgProps.height * printWidth / imgProps.width;
+
+if (i > 0) pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', 0, 0, printWidth, printHeight);
+    }
+    return pdf.output('datauristring');
+  }
+
+async function submitToSheetAndPrint() {
+    const form = document.getElementById('activityForm');
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+
+const pendingAcc = Object.keys(state).filter(k => state[k].isAcc && state[k].status !== 'signed');
+    if (pendingAcc.length > 0) { alert("One or more accompanying teachers have not verified their PIN yet."); return; }
+
+if (!confirm("Ready to submit and print?")) return;
+
+const btn = document.getElementById('btnMainSubmit');
+    btn.disabled = true;
+    btn.innerHTML = "⏳ Generating 4-Page PDF & Saving...";
+
+try {
+      document.getElementById('p_submitDate').innerText = formatDateStandard(document.getElementById('i_submitDate').value);
+      document.getElementById('p_submitDay').innerText = getDayName(document.getElementById('i_submitDate').value);
+      document.getElementById('p_submitTime').innerText = formatTime12h(document.getElementById('i_submitTime').value);
+      document.getElementById('p_societyName').innerText = (document.getElementById('i_societyName').value || '').toUpperCase();
+      document.getElementById('p_activity').innerText = (document.getElementById('i_activity').value || '').toUpperCase();
+      document.getElementById('p_venue').innerText = (document.getElementById('i_venue').value || '').toUpperCase();
+      document.getElementById('p_fromDate').innerText = formatDateStandard(document.getElementById('i_fromDate').value);
+      document.getElementById('p_fromDay').innerText = getDayName(document.getElementById('i_fromDate').value);
+      document.getElementById('p_fromTime').innerText = formatTime12h(document.getElementById('i_fromTime').value);
+      document.getElementById('p_toDate').innerText = formatDateStandard(document.getElementById('i_toDate').value);
+      document.getElementById('p_toDay').innerText = getDayName(document.getElementById('i_toDate').value);
+      document.getElementById('p_toTime').innerText = formatTime12h(document.getElementById('i_toTime').value);
+      document.getElementById('p_boys').innerText = document.getElementById('i_boys').value;
+      document.getElementById('p_girls').innerText = document.getElementById('i_girls').value;
+      document.getElementById('p_total').innerText = (parseInt(document.getElementById('i_boys').value || 0, 10)) + (parseInt(document.getElementById('i_girls').value || 0, 10));
+      document.getElementById('p_accommodation').innerText = document.getElementById('i_accommodation').value;
+
+const accContainer = document.getElementById('p_acc_container');
+      const alpha = 'abcdefghijklmnopqrstuvwxyz'.split('');
+      const verifiedTeachers = Object.keys(state).filter(k => state[k].isAcc && state[k].status === 'signed');
+      const totalSlots = Math.max(10, verifiedTeachers.length);
+      let tNamesStr = "";
+
+let accTableHTML = '<table class="teacher-slot-table">';
+      const half = Math.ceil(totalSlots / 2);
+
+for (let i = 0; i < half; i++) {
+        const renderSlot = (idx) => {
+          if (idx >= totalSlots) return `<td style="width:50%;"></td>`;
+          const tId = verifiedTeachers[idx];
+          const letter = (alpha[idx] || '-') + ')';
+          if (tId) {
+            const name = document.getElementById(`sel_${tId}`).value;
+            tNamesStr += name + ", ";
+            return `
+              <td style="width:50%; padding-right:15px; padding-bottom:12px;">
+                <div style="display:flex; align-items:flex-end;">
+                  <span style="width:20px; font-weight:bold;">${letter}</span>
+                  <div style="flex:1; border-bottom:1px dotted #000; text-align:center; position:relative; margin-right:15px; font-weight:bold; height:20px;">
+                    <span style="position:absolute; bottom:1px; left:0; right:0;">${name}</span>
+                  </div>
+                  <div style="width:90px; border-bottom:1px dotted #000; position:relative; height:20px;">
+                    <img src="${state[tId].pad.toDataURL()}" style="height:35px; position:absolute; bottom:1px; left:0; width:100%; object-fit:contain;">
+                  </div>
+                </div>
+              </td>`;
+          }
+          return `
+            <td style="width:50%; padding-right:15px; padding-bottom:12px;">
+              <div style="display:flex; align-items:flex-end;">
+                <span style="width:20px; font-weight:bold;">${letter}</span>
+                <div style="flex:1; border-bottom:1px dotted #000; margin-right:15px; height:20px;"></div>
+                <div style="width:90px; border-bottom:1px dotted #000; height:20px;"></div>
+              </div>
+            </td>`;
+        };
+        accTableHTML += `<tr>${renderSlot(i)}${renderSlot(i + half)}</tr>`;
+      }
+      accTableHTML += '</table>';
+      accContainer.innerHTML = accTableHTML;
+
+const checklistData = {};
+      checklistItems.forEach(item => {
+        const num = parseInt(item.split('.')[0], 10);
+        const checked = document.querySelector(`input[name="chk_${num}"]:checked`);
+        const rmkObj = document.getElementById(`chk_rmk_${num}`);
+        checklistData[num] = { val: checked ? checked.value : '', remark: rmkObj ? rmkObj.value : '' };
+
+document.getElementById(`p_chk_${num}_a`).innerText = (checked && checked.value === 'attached') ? '✓' : '';
+        document.getElementById(`p_chk_${num}_p`).innerText = (checked && checked.value === 'pending') ? '✓' : '';
+        document.getElementById(`p_chk_${num}_n`).innerText = (checked && checked.value === 'na') ? '✓' : '';
+        document.getElementById(`p_chk_rmk_${num}`).innerText = rmkObj ? rmkObj.value : '';
+      });
+
+const mealsData = {
+        m20: { b: document.getElementById('m20_b').checked, t: document.getElementById('m20_t').checked, l: document.getElementById('m20_l').checked, d: document.getElementById('m20_d').checked, date: document.getElementById('m20_date').value, qty: document.getElementById('m20_qty').value, extras: getExtraDates('m20') },
+        m21: { b: document.getElementById('m21_b').checked, t: document.getElementById('m21_t').checked, l: document.getElementById('m21_l').checked, d: document.getElementById('m21_d').checked, date: document.getElementById('m21_date').value, qty: document.getElementById('m21_qty').value, extras: getExtraDates('m21') }
+      };
+
+const markMeal = (id, boxId) => {
+          const el = document.getElementById(boxId);
+          if(el) el.innerText = document.getElementById(id).checked ? '✓' : '';
+      };
+      markMeal('m20_b', 'p_m20_b'); markMeal('m20_t', 'p_m20_t'); markMeal('m20_l', 'p_m20_l'); markMeal('m20_d', 'p_m20_d');
+      document.getElementById('p_m20_date').innerText = formatDateStandard(document.getElementById('m20_date').value);
+      document.getElementById('p_m20_day').innerText = getDayName(document.getElementById('m20_date').value);
+      document.getElementById('p_m20_qty').innerText = document.getElementById('m20_qty').value;
+
+markMeal('m21_b', 'p_m21_b'); markMeal('m21_t', 'p_m21_t'); markMeal('m21_l', 'p_m21_l'); markMeal('m21_d', 'p_m21_d');
+      document.getElementById('p_m21_date').innerText = formatDateStandard(document.getElementById('m21_date').value);
+      document.getElementById('p_m21_day').innerText = getDayName(document.getElementById('m21_date').value);
+      document.getElementById('p_m21_qty').innerText = document.getElementById('m21_qty').value;
+
+// --- BUILD EXTRA PRINT ROWS ---
+      const buildExtraPrintRows = (section) => {
+          const extras = getExtraDates(section);
+          let html = '';
+          extras.forEach(ex => {
+              // Kita kecilkan saiz kotak checkbox sikit dan pakai border #aaa
+              const chkBox = (isChecked) => `<div class="print-box-square" style="margin:0 auto; border-color: #aaa; width:12px; height:12px; font-size:9px;">${isChecked ? '✓' : ''}</div>`;
+              html += `
+              <tr style="border-bottom: 1px solid #ccc; color: #000;">
+                <td style="padding: 3px 0;">${formatDateStandard(ex.date)}</td>
+                <td style="padding: 3px 0;">${getDayName(ex.date)}</td>
+                <td style="padding: 3px 0;">${chkBox(ex.b)}</td>
+                <td style="padding: 3px 0;">${chkBox(ex.t)}</td>
+                <td style="padding: 3px 0;">${chkBox(ex.l)}</td>
+                <td style="padding: 3px 0;">${chkBox(ex.d)}</td>
+                <td style="padding: 3px 0; font-size:10px;">${ex.qty}</td>
+              </tr>`;
+          });
+          document.getElementById(`p_${section}_extra_rows`).innerHTML = html;
+      };
+      buildExtraPrintRows('m20');
+      buildExtraPrintRows('m21');
+
+signerDefinitions.forEach(s => {
+        if (s.id === 'app') {
+          document.getElementById('p_name_app').innerText = document.getElementById('sel_app').value;
+          if (state.app && state.app.pad && !state.app.pad.isEmpty()) {
+            document.getElementById('p_img_app').src = state.app.pad.toDataURL();
+            document.getElementById('p_img_app').style.display = 'block';
+          }
+        } else {
+          const img = document.getElementById(`p_img_${s.id}`);
+          if (img && state[s.id] && state[s.id].pad && !state[s.id].pad.isEmpty()) {
+            img.src = state[s.id].pad.toDataURL();
+            img.style.display = 'block';
+          }
+          const isYes = state[s.id].approval === 'yes';
+          if (document.getElementById(`p_${s.id}_yes`) && isYes) document.getElementById(`p_${s.id}_yes`).innerText = '✓';
+          if (document.getElementById(`p_${s.id}_no`) && !isYes) document.getElementById(`p_${s.id}_no`).innerText = '✓';
+
+const printCmt = document.getElementById(`p_cmt_${s.id}`);
+          const cmtVal = document.getElementById(`cmt_${s.id}`) ? document.getElementById(`cmt_${s.id}`).value : '';
+          if (printCmt && cmtVal) {
+            let prefix = "";
+            if (s.role.includes('Housemistress')) prefix = "HMis: ";
+            else if (s.role.includes('Housemaster')) prefix = "HM: ";
+            printCmt.innerText = prefix + cmtVal;
+          }
+        }
+      });
+
+let pdfBase64 = "";
+      try { pdfBase64 = await generatePdfBase64(); } catch(e) { console.error(e); }
+
+const getInfo = (id) => {
+        let info = document.getElementById(`sel_${id}`).value;
+        const cmtField = document.getElementById(`cmt_${id}`);
+        const apprField = document.getElementById(`appr_${id}`);
+        if (cmtField && apprField) {
+          const apprText = apprField.value.toUpperCase();
+          const cmtText = cmtField.value ? ` - "${cmtField.value}"` : '';
+          info += ` [${apprText}${cmtText}]`;
+        }
+        return info;
+      };
+
+const payload = {
+        activityId: ACTIVITY_ID || '',
+        submitDate: document.getElementById('i_submitDate').value,
+        submitTime: document.getElementById('i_submitTime').value,
+        society: document.getElementById('i_societyName').value,
+        activity: document.getElementById('i_activity').value,
+        venue: document.getElementById('i_venue').value,
+        fromDateTime: `${document.getElementById('i_fromDate').value} ${document.getElementById('i_fromTime').value}`,
+        toDateTime: `${document.getElementById('i_toDate').value} ${document.getElementById('i_toTime').value}`,
+        boys: document.getElementById('i_boys').value,
+        girls: document.getElementById('i_girls').value,
+        total: (parseInt(document.getElementById('i_boys').value || 0, 10)) + (parseInt(document.getElementById('i_girls').value || 0, 10)),
+        teachers: tNamesStr || "None",
+        tic_info: document.getElementById('sel_app').value,
+        hm_info: `${getInfo('hm1')} | ${getInfo('hm2')} | ${getInfo('hm3')}`,
+        hmis_info: `${getInfo('hmis1')} | ${getInfo('hmis2')} | ${getInfo('hmis3')}`,
+        coord_info: `${getInfo('co1')} | ${getInfo('co2')} | ${getInfo('co3')}`,
+        pdfBase64: pdfBase64,
+        checklist: JSON.stringify(checklistData),
+        meals: JSON.stringify(mealsData)
+      };
+
+const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain;charset=UTF-8'},
+        body: JSON.stringify({ key: API_KEY, action: 'finalSubmit', payload: payload })
+      });
+
+const result = await res.json();
+      if (!result.success) throw new Error(result.error || result.message || 'Save failed');
+
+const key = ACTIVITY_ID ? OFFLINE_DRAFT_KEY + '_' + ACTIVITY_ID : OFFLINE_DRAFT_KEY;
+      localStorage.removeItem(key);
+      localStorage.removeItem(OFFLINE_DRAFT_KEY);
+
+btn.innerHTML = "✅ Saved Successfully! Opening Print...";
+      setTimeout(() => {
+        window.print();
+        btn.disabled = false;
+        btn.innerHTML = "🖨️ 10/10 Complete - Save Record & Print 4-Page Form";
+      }, 900);
+
+} catch (err) {
+      alert("Failed to save to Google Sheets: " + err.message);
+      btn.disabled = false;
+      btn.innerHTML = "🖨️ 10/10 Complete - Save Record & Print 4-Page Form";
+    }
+  }
+
+// ==============================
+  // LOAD & INITIALIZE
+  // ==============================
+  window.onload = function() {
+    buildChecklistUI();
+    buildPrintBlocks();
+    buildSignatureUI();
+    setupRealtimeSync();
+
+setTimeout(async () => {
+      initPads();
+
+const today = new Date();
+      document.getElementById('i_submitDate').value = `${today.getFullYear()}-${pad0(today.getMonth()+1)}-${pad0(today.getDate())}`;
+      document.getElementById('new_date').value = `${today.getFullYear()}-${pad0(today.getMonth()+1)}-${pad0(today.getDate())}`;
+
+if (ACTIVITY_ID) {
+        await loadActivityRecord(ACTIVITY_ID);
+      } else {
+        restoreOfflineDraft();
+      }
+    }, 120);
+
+window.addEventListener('beforeprint', function() {
+    const printLayout = document.getElementById('print-layout');
+
+// Semak sama ada 10/10 signatures lengkap
+    const signedCount = Object.keys(state).filter(id => 
+        !state[id].isAcc && state[id].status === 'signed'
+    ).length;
+
+const hasContent = document.getElementById('p_activity').innerText.trim() !== '';
+
+// Warning keluar jika: less than 10 sigs ATAU form belum disubmit
+    if (signedCount < 10 || !hasContent) {
+        printLayout.style.display = 'block';
+        printLayout.innerHTML = `
+            <div style="display:flex; justify-content:center; align-items:center; 
+                        height:100vh; font-family:Arial; text-align:center; padding:40px;">
+                <div style="max-width:500px;">
+                    <h2 style="color:#ef4444; font-size:1.4rem; margin-bottom:16px;">
+                        ⚠️ Form Submission Incomplete
+                    </h2>
+                    <p style="color:#1e3a8a; font-size:1rem; font-weight:600; margin-bottom:12px;">
+                        This form cannot be printed at this stage.
+                    </p>
+                    <p style="color:#64748b; font-size:0.9rem; line-height:1.7;">
+                        All ten (10) designated approvals and digital signatures must be 
+                        verified and locked prior to printing. Kindly ensure that all 
+                        required signatories have completed their verification before 
+                        proceeding to print this clearance form.
+                    </p>
+                    <p style="color:#ef4444; font-size:0.85rem; font-weight:700; margin-top:12px;">
+                        Current status: ${signedCount} / 10 signatures completed.
+                    </p>
+                    <p style="color:#94a3b8; font-size:0.78rem; margin-top:20px; 
+                               letter-spacing:1px; text-transform:uppercase;">
+                        Kolej Yayasan Saad Melaka — Digital Clearance System
+                    </p>
+                </div>
+            </div>`;
+    }
+});
+
+window.addEventListener("resize", () => {
+  Object.keys(state).forEach(id => {
+    // TAMBAH INI: Kalau dah verify, abaikan canvas ini supaya tak terpadam
+    if (state[id].status === 'signed') return;
+
+    const canvas = document.getElementById(`canvas_${id}`);
+    if (canvas && state[id].pad) {
+
+          const data = (!state[id].pad.isEmpty()) ? state[id].pad.toData() : null;
+          const ratio = Math.max(window.devicePixelRatio || 1, 1);
+
+canvas.width = canvas.offsetWidth * ratio;
+          canvas.height = canvas.offsetHeight * ratio;
+          canvas.getContext("2d").scale(ratio, ratio);
+
+if (data) {
+            state[id].pad.clear();
+            state[id].pad.fromData(data);
+          }
+        }
+      });
+    });
+  };
+
+</script>
+
+<script defer src="https://cdn.jsdelivr.net/gh/kz9979/kz-assets@main/kz-security-shield-v4.0.min.js?v=2"></script>
+</body>
+</html>

@@ -2989,7 +2989,7 @@ window.addEventListener('beforeprint', function() {
     const printLayout = document.getElementById('print-layout');
 
 // Semak sama ada 10/10 signatures lengkap
-    const signedCount = Object.keys(state).filter(id => 
+    const signedCount = Object.keys(state).filter(id =>
         !state[id].isAcc && state[id].status === 'signed'
     ).length;
 
@@ -2997,6 +2997,7 @@ const hasContent = document.getElementById('p_activity').innerText.trim() !== ''
 
 // Warning keluar jika: less than 10 sigs ATAU form belum disubmit
     if (signedCount < 10 || !hasContent) {
+        window._printLayoutBackup = printLayout.innerHTML;
         printLayout.style.display = 'block';
         printLayout.innerHTML = `
             <div style="display:flex; justify-content:center; align-items:center; 
@@ -3023,6 +3024,14 @@ const hasContent = document.getElementById('p_activity').innerText.trim() !== ''
                     </p>
                 </div>
             </div>`;
+    }
+});
+
+window.addEventListener('afterprint', function() {
+    if (window._printLayoutBackup) {
+        const printLayout = document.getElementById('print-layout');
+        printLayout.innerHTML = window._printLayoutBackup;
+        window._printLayoutBackup = null;
     }
 });
 

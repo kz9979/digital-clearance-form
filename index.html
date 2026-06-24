@@ -49,18 +49,34 @@
 .header {
         text-align: center;
         margin-bottom: 22px;
-        border-bottom: 2px solid var(--border);
-        padding-bottom: 18px;
+        padding: 22px 18px 20px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #1e3a8a, #0f172a);
       }
 
 .header h1 {
         font-size: 1.55rem;
         font-weight: 800;
-        color: var(--brand);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+.header h1 .version-badge {
+        font-size: 0.7rem;
+        font-weight: 700;
+        background: #f59e0b;
+        color: #0f172a;
+        padding: 2px 8px;
+        border-radius: 20px;
+        letter-spacing: 0.5px;
+        vertical-align: middle;
       }
 
 .header p {
-        color: var(--muted);
+        color: #93c5fd;
         font-size: .95rem;
         margin-top: 6px;
       }
@@ -694,7 +710,7 @@ button:disabled, .btn-main:disabled, .btn-secondary:disabled, .btn-success:disab
 
 <div id="screen-ui" class="container">
   <div class="header">
-    <h1>Digital Clearance / Approval Form for College Activity</h1>
+    <h1>Digital Clearance / Approval Form for College Activity <span class="version-badge">v2.0</span></h1>
     <p>Multi-Activity Workflow • Unique Link Generator • WhatsApp Message • 4-Page PDF</p>
   </div>
 

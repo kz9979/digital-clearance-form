@@ -1623,10 +1623,14 @@ data['m20_extras'] = getExtraDates('m20');
 data['m21_extras'] = getExtraDates('m21');
 
 Object.keys(state).forEach(function(id) {
-        if (state[id] && state[id].pad && !state[id].pad.isEmpty()) {
-            data['sig_' + id] = state[id].pad.toDataURL();
-            data['sig_status_' + id] = state[id].status;
-            data['sig_approval_' + id] = state[id].approval || 'yes';
+        if (state[id]) {
+            const sigData = state[id].finalSig ||
+                (state[id].pad && !state[id].pad.isEmpty() ? state[id].pad.toDataURL() : null);
+            if (sigData) {
+                data['sig_' + id] = sigData;
+                data['sig_status_' + id] = state[id].status;
+                data['sig_approval_' + id] = state[id].approval || 'yes';
+            }
         }
     });
 
@@ -2235,7 +2239,7 @@ async function saveSingleSignature(id) {
       signerName: document.getElementById(`sel_${id}`)?.value || '',
       approval: document.getElementById(`appr_${id}`)?.value || '',
       comment: document.getElementById(`cmt_${id}`)?.value || '',
-      signatureDataUrl: state[id].pad.toDataURL(),
+      signatureDataUrl: state[id].finalSig || state[id].pad.toDataURL(),
       signedAt: new Date().toISOString()
     };
     const res = await fetch(SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, body: JSON.stringify({ key: API_KEY, action: 'saveSignature', payload }) });
@@ -2253,6 +2257,9 @@ if (newStatus === 'signed') {
       if (!inputField.value.trim()) { alert("Name cannot be blank."); return; }
       if (!pinField.value.trim()) { alert("Please enter your PIN."); return; }
       if (state[id].pad.isEmpty()) { alert("Please provide a signature."); return; }
+
+      // Capture signature immediately before any async ops — prevents resize/scroll clearing canvas
+      state[id].finalSig = state[id].pad.toDataURL();
 
 const originalText = submitBtn.innerText;
       submitBtn.innerText = "Verifying...";
@@ -3000,27 +3007,33 @@ const hasContent = document.getElementById('p_activity').innerText.trim() !== ''
 
 window.addEventListener("resize", () => {
   Object.keys(state).forEach(id => {
-    // TAMBAH INI: Kalau dah verify, abaikan canvas ini supaya tak terpadam
-    if (state[id].status === 'signed') return;
-
     const canvas = document.getElementById(`canvas_${id}`);
-    if (canvas && state[id].pad) {
+    if (!canvas || !state[id].pad) return;
 
-          const data = (!state[id].pad.isEmpty()) ? state[id].pad.toData() : null;
-          const ratio = Math.max(window.devicePixelRatio || 1, 1);
+    const ratio = Math.max(window.devicePixelRatio || 1, 1);
+    canvas.width  = canvas.offsetWidth  * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    canvas.getContext("2d").scale(ratio, ratio);
 
-canvas.width = canvas.offsetWidth * ratio;
-          canvas.height = canvas.offsetHeight * ratio;
-          canvas.getContext("2d").scale(ratio, ratio);
+    // Signed pads: redraw from saved data URL so signature stays visible
+    if (state[id].finalSig) {
+      const img = new Image();
+      img.onload = () => {
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, canvas.offsetWidth, canvas.offsetHeight);
+      };
+      img.src = state[id].finalSig;
+      return;
+    }
 
-if (data) {
-            state[id].pad.clear();
-            state[id].pad.fromData(data);
-          }
-        }
-      });
-    });
-  };
+    // Unsigned in-progress pads: restore stroke data
+    const data = !state[id].pad.isEmpty() ? state[id].pad.toData() : null;
+    if (data) {
+      state[id].pad.clear();
+      state[id].pad.fromData(data);
+    }
+  });
+});
 
 </script>
 
